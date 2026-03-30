@@ -1,0 +1,33 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --color-surface: #fbf9fa;
+  --color-surface-dim: #dbd9db;
+  --color-surface-container-lowest: #ffffff;
+  --color-surface-container-low: #f5f3f4;
+  --color-surface-container: #efedee;
+  --color-surface-container-high: #e9e8e9;
+  --color-surface-container-highest: #e3e2e3;
+  --color-on-surface: #1b1c1d;
+  --color-on-surface-variant: #494454;
+  --color-primary: #6b38d4;
+  --color-primary-container: #8455ef;
+  --color-on-primary: #ffffff;
+  --color-on-primary-container: #fffbff;
+  --color-tertiary: #5a6100;
+  --color-tertiary-fixed: #dfed1a;
+  --color-outline: #7b7486;
+  --color-outline-variant: #cbc3d7;
+  
+  --font-headline: 'Inter', sans-serif;
+  --font-body: 'Inter', sans-serif;
+  --font-label: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+}
+
+body {
+  background-color: var(--color-surface);
+  color: var(--color-on-surface);
+  font-family: var(--font-body);
+  -webkit-font-smoothing: antialiased;
+}
