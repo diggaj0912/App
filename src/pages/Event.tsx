@@ -21,7 +21,7 @@ export default function Event() {
             Curator
           </Link>
           <div className="hidden md:flex gap-6">
-            <Link to="#" className="text-sm text-gray-500 hover:text-gray-900 transition-colors">
+            <Link to="/community" className="text-sm text-gray-500 hover:text-gray-900 transition-colors">
               Communities
             </Link>
             <Link to="/event" className="text-sm text-purple-600 font-medium transition-colors">
@@ -41,16 +41,16 @@ export default function Event() {
               className="bg-transparent border-none focus:outline-none text-sm text-gray-700 w-48 placeholder:text-gray-400"
             />
           </div>
-          <button className="p-2 text-gray-500 hover:bg-gray-100 rounded-full transition-all">
+          <button onClick={() => alert("Notifications")} className="p-2 text-gray-500 hover:bg-gray-100 rounded-full transition-all">
             <Bell className="w-5 h-5" />
           </button>
-          <div className="w-8 h-8 rounded-full bg-gray-200 overflow-hidden border border-gray-200">
+          <Link to="/login" className="w-8 h-8 rounded-full bg-gray-200 overflow-hidden border border-gray-200 hover:ring-2 hover:ring-indigo-500 transition-all">
             <img
               src="https://lh3.googleusercontent.com/aida-public/AB6AXuA8lsF7EjahYQvzMul7Z0r2GeyQlpvZCf_SR0R8foON7kwsJ8aoAFX45_94TM2TJrADixtJ18B419bxaDIu9C_4mMh8ugDCgXjqXpZQCDsRDZ3JnCBahEvuEzaGTZ7ckPYZfePRYbZ1IWadAzmtycVkuKblaW6F9YdMYAKzAeOjJz_OPYIqeuzcNKrc3a_UkSOu4BH9YJPcW1DH_F3NI6NHW00gUKR8zobwV4_ujqHOytWIa67JG2YTIK6fxWc4L19xZ63OiJCh131o"
-              alt="User avatar"
+              alt="Login / Signup"
               className="w-full h-full object-cover"
             />
-          </div>
+          </Link>
         </div>
       </nav>
 
@@ -142,7 +142,7 @@ export default function Event() {
             <div className="mt-16">
               <div className="flex justify-between items-center mb-6">
                 <h3 className="text-xl font-bold text-gray-900">Attendees (124)</h3>
-                <button className="text-purple-600 font-medium text-sm hover:underline">View all</button>
+                <button onClick={() => alert("Viewing all attendees...")} className="text-purple-600 font-medium text-sm hover:underline">View all</button>
               </div>
               <div className="flex items-center gap-4">
                 <div className="flex -space-x-3">
@@ -194,7 +194,7 @@ export default function Event() {
                 </div>
               </div>
 
-              <button className="w-full bg-[#7c3aed] text-white hover:bg-[#6d28d9] py-4 rounded-xl font-bold text-lg transition-colors shadow-lg shadow-purple-500/30">
+              <button onClick={() => alert("Successfully registered for the event!")} className="w-full bg-[#7c3aed] text-white hover:bg-[#6d28d9] py-4 rounded-xl font-bold text-lg transition-colors shadow-lg shadow-purple-500/30">
                 Register
               </button>
 

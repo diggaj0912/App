@@ -22,12 +22,12 @@ const Navbar = () => (
         Curator
       </span>
       <div className="hidden md:flex gap-6">
-        <a href="#" className="text-primary font-semibold text-sm transition-all duration-300">
+        <Link to="/" className="text-primary font-semibold text-sm transition-all duration-300">
           Home
-        </a>
-        <a href="#" className="text-on-surface-variant hover:text-on-surface text-sm transition-all duration-300">
+        </Link>
+        <Link to="/community" className="text-on-surface-variant hover:text-on-surface text-sm transition-all duration-300">
           Communities
-        </a>
+        </Link>
         <Link to="/event" className="text-on-surface-variant hover:text-on-surface text-sm transition-all duration-300">
           Event
         </Link>
@@ -42,19 +42,19 @@ const Navbar = () => (
           className="bg-transparent border-none focus:outline-none text-sm text-on-surface w-40 placeholder:text-outline"
         />
       </div>
-      <button className="p-2 text-on-surface-variant hover:bg-surface-container-low rounded-full transition-all">
+      <button onClick={() => alert("Notifications")} className="p-2 text-on-surface-variant hover:bg-surface-container-low rounded-full transition-all">
         <Bell className="w-5 h-5" />
       </button>
-      <button className="p-2 text-on-surface-variant hover:bg-surface-container-low rounded-full transition-all">
+      <button onClick={() => alert("Settings")} className="p-2 text-on-surface-variant hover:bg-surface-container-low rounded-full transition-all">
         <Settings className="w-5 h-5" />
       </button>
-      <div className="w-8 h-8 rounded-full bg-surface-container-high overflow-hidden">
+      <Link to="/login" className="w-8 h-8 rounded-full bg-surface-container-high overflow-hidden hover:ring-2 hover:ring-primary transition-all">
         <img
           src="https://lh3.googleusercontent.com/aida-public/AB6AXuA8lsF7EjahYQvzMul7Z0r2GeyQlpvZCf_SR0R8foON7kwsJ8aoAFX45_94TM2TJrADixtJ18B419bxaDIu9C_4mMh8ugDCgXjqXpZQCDsRDZ3JnCBahEvuEzaGTZ7ckPYZfePRYbZ1IWadAzmtycVkuKblaW6F9YdMYAKzAeOjJz_OPYIqeuzcNKrc3a_UkSOu4BH9YJPcW1DH_F3NI6NHW00gUKR8zobwV4_ujqHOytWIa67JG2YTIK6fxWc4L19xZ63OiJCh131o"
-          alt="User avatar"
+          alt="Login / Signup"
           className="w-full h-full object-cover"
         />
-      </div>
+      </Link>
     </div>
   </nav>
 );
@@ -84,14 +84,12 @@ const Hero = () => (
         The elite ecosystem for modern event organizers and high-impact communities. Sophisticated tools, seamless integration, effortless growth.
       </p>
       <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-4">
-        <Link to="/dashboard">
-          <button className="bg-gradient-to-br from-primary to-primary-container text-on-primary px-8 py-4 rounded-xl font-semibold shadow-lg shadow-primary/20 hover:scale-95 transition-all duration-300">
-            Go to Dashboard
-          </button>
+        <Link to="/dashboard" className="bg-gradient-to-br from-primary to-primary-container text-on-primary px-8 py-4 rounded-xl font-semibold shadow-lg shadow-primary/20 hover:scale-95 transition-all duration-300 inline-block">
+          Go to Dashboard
         </Link>
-        <button className="bg-surface-container-highest text-primary px-8 py-4 rounded-xl font-semibold hover:bg-surface-container-low transition-all duration-300">
+        <Link to="/community" className="bg-surface-container-highest text-primary px-8 py-4 rounded-xl font-semibold hover:bg-surface-container-low transition-all duration-300 inline-block">
           Explore Communities
-        </button>
+        </Link>
       </div>
     </motion.div>
   </section>
@@ -218,7 +216,7 @@ const BentoGrid = () => (
           <p className="text-on-surface-variant text-sm leading-relaxed">
             Whether it's a 10-person workshop or a 10,000-person global summit, Curator handles the complexity so you can focus on the content.
           </p>
-          <button className="text-primary font-semibold flex items-center gap-2 group text-sm mt-2">
+          <button onClick={() => alert("Enterprise features coming soon!")} className="text-primary font-semibold flex items-center gap-2 group text-sm mt-2">
             Learn about enterprise features
             <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
           </button>
@@ -275,10 +273,10 @@ const BottomCTA = () => (
           Join thousands of creators building the next generation of social connection.
         </p>
         <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-4">
-          <button className="bg-white text-primary px-10 py-5 rounded-2xl font-bold text-lg hover:shadow-2xl hover:scale-105 transition-all duration-300">
+          <Link to="/login" className="bg-white text-primary px-10 py-5 rounded-2xl font-bold text-lg hover:shadow-2xl hover:scale-105 transition-all duration-300 inline-block">
             Get Started for Free
-          </button>
-          <button className="bg-primary-container/30 text-white px-10 py-5 rounded-2xl font-bold text-lg hover:bg-primary-container/40 transition-all duration-300">
+          </Link>
+          <button onClick={() => alert("Demo booking opened!")} className="bg-primary-container/30 text-white px-10 py-5 rounded-2xl font-bold text-lg hover:bg-primary-container/40 transition-all duration-300">
             Book a Demo
           </button>
         </div>
@@ -297,13 +295,13 @@ const Footer = () => (
             Redefining the digital community experience through elegant design and seamless utility.
           </p>
           <div className="flex gap-4">
-            <a href="#" className="text-on-surface-variant hover:text-primary transition-colors">
+            <a href="#" onClick={(e) => { e.preventDefault(); alert("Opening social link..."); }} className="text-on-surface-variant hover:text-primary transition-colors">
               <Share2 className="w-5 h-5" />
             </a>
-            <a href="#" className="text-on-surface-variant hover:text-primary transition-colors">
+            <a href="#" onClick={(e) => { e.preventDefault(); alert("Opening social link..."); }} className="text-on-surface-variant hover:text-primary transition-colors">
               <Globe className="w-5 h-5" />
             </a>
-            <a href="#" className="text-on-surface-variant hover:text-primary transition-colors">
+            <a href="#" onClick={(e) => { e.preventDefault(); alert("Opening social link..."); }} className="text-on-surface-variant hover:text-primary transition-colors">
               <Users className="w-5 h-5" />
             </a>
           </div>
@@ -319,7 +317,7 @@ const Footer = () => (
             <ul className="space-y-4 text-sm text-on-surface-variant">
               {col.links.map((link, j) => (
                 <li key={j}>
-                  <a href="#" className="hover:text-primary transition-colors">{link}</a>
+                  <a href="#" onClick={(e) => { e.preventDefault(); alert(`Navigating to ${link}`); }} className="hover:text-primary transition-colors">{link}</a>
                 </li>
               ))}
             </ul>
