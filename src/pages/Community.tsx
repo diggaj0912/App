@@ -1,11 +1,31 @@
-import { Link } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { Link, useNavigate, Navigate } from "react-router-dom";
 import {
   Search, Bell, Settings, Image as ImageIcon, Paperclip, Calendar as CalendarIcon,
   Heart, MessageSquare, Share, Bookmark, Users, HelpCircle,
-  Award, Folder, Plus, ArrowRight
+  Award, Folder, Plus, ArrowRight, LogOut
 } from "lucide-react";
+import { auth } from "../firebase";
+import { signOut } from "firebase/auth";
 
 export default function Community() {
+  const navigate = useNavigate();
+  const user = localStorage.getItem("user");
+
+  if (!user) {
+    return <Navigate to="/login" />;
+  }
+
+  const handleLogout = async () => {
+    try {
+      await signOut(auth);
+      localStorage.removeItem("user");
+      navigate("/login");
+    } catch (error) {
+      console.error("Error logging out:", error);
+    }
+  };
+
   return (
     <div className="flex flex-col h-screen bg-[#f8f9fa] font-sans text-gray-900 overflow-hidden">
       {/* Top Navigation */}
@@ -88,8 +108,14 @@ export default function Community() {
           </div>
 
           <div className="p-6">
-            <button className="flex items-center gap-3 text-gray-500 hover:text-gray-900 transition-colors text-sm font-medium">
+            <button className="flex items-center gap-3 text-gray-500 hover:text-gray-900 transition-colors text-sm font-medium mb-4">
               <HelpCircle className="w-5 h-5" /> Help Center
+            </button>
+            <button 
+              onClick={handleLogout}
+              className="flex items-center gap-3 text-red-500 hover:text-red-600 transition-colors text-sm font-medium"
+            >
+              <LogOut className="w-5 h-5" /> Logout
             </button>
           </div>
         </aside>

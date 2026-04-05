@@ -1,3 +1,4 @@
+import { useState, useEffect } from 'react';
 import { motion } from 'motion/react';
 import {
   Search,
@@ -12,6 +13,25 @@ import {
 import { Link } from 'react-router-dom';
 
 export default function Event() {
+  const [events, setEvents] = useState<any[]>([]);
+
+  useEffect(() => {
+    const fetchEvents = async () => {
+      try {
+        const user = localStorage.getItem("user");
+        if (user) {
+          const res = await fetch(`/events/${user}`);
+          const data = await res.json();
+          setEvents(data);
+        }
+      } catch (err) {
+        console.error("Failed to fetch events:", err);
+      }
+    };
+    
+    fetchEvents();
+  }, []);
+
   return (
     <div className="min-h-screen bg-[#f8f9fa] pb-24 font-sans text-gray-900">
       {/* Navbar */}
@@ -222,6 +242,29 @@ export default function Event() {
             </div>
           </motion.div>
         </div>
+        {/* Render Fetched Events */}
+        {events.length > 0 && (
+          <div className="mt-16">
+            <h2 className="text-3xl font-bold text-gray-900 mb-6">Your Created Events</h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {events.map((event) => (
+                <div key={event.id} className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
+                  <div className="flex justify-between items-start mb-4">
+                    <span className="bg-purple-100 text-purple-700 text-xs font-bold px-2.5 py-1 rounded-full uppercase tracking-wider">
+                      Event
+                    </span>
+                    <span className="text-xs text-gray-500 font-medium">ID: {event.id}</span>
+                  </div>
+                  <h3 className="text-xl font-bold text-gray-900 mb-2">{event.title}</h3>
+                  <div className="flex items-center gap-2 text-sm text-gray-500 mt-4">
+                    <Users className="w-4 h-4" />
+                    <span>Owner: {event.owner}</span>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
       </main>
     </div>
   );

@@ -1,5 +1,7 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate, Navigate } from "react-router-dom";
+import { auth } from "../firebase";
+import { signOut } from "firebase/auth";
 import {
   Bell,
   Settings,
@@ -19,6 +21,23 @@ import {
 } from "lucide-react";
 
 export default function CreateEvent() {
+  const navigate = useNavigate();
+  const user = localStorage.getItem("user");
+
+  if (!user) {
+    return <Navigate to="/login" />;
+  }
+
+  const handleLogout = async () => {
+    try {
+      await signOut(auth);
+      localStorage.removeItem("user");
+      navigate("/login");
+    } catch (error) {
+      console.error("Error logging out:", error);
+    }
+  };
+
   const [form, setForm] = useState({
     title: "",
     description: "",
@@ -38,10 +57,24 @@ export default function CreateEvent() {
     });
   };
 
-  const handleSubmit = (e: any) => {
+  const handleSubmit = async (e: any) => {
     e.preventDefault();
-    console.log("Event Created:", form);
-    alert("Event Created Successfully 🚀");
+    try {
+      const res = await fetch("/create-event", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          title: form.title,
+          owner: localStorage.getItem("user") || "anonymous",
+        }),
+      });
+      const data = await res.json();
+      console.log("Event Created:", data.event);
+      alert("Event Created Successfully 🚀");
+    } catch (err) {
+      console.error(err);
+      alert("An error occurred while creating the event");
+    }
   };
 
   return (
@@ -82,10 +115,10 @@ export default function CreateEvent() {
             <HelpCircle className="w-5 h-5" />
             Help
           </button>
-          <Link to="/login" className="w-full flex items-center gap-3 px-4 py-3 text-gray-600 hover:bg-gray-50 rounded-xl transition-colors font-medium text-sm">
+          <button onClick={handleLogout} className="w-full flex items-center gap-3 px-4 py-3 text-red-500 hover:bg-red-50 rounded-xl transition-colors font-medium text-sm">
             <LogOut className="w-5 h-5" />
             Logout
-          </Link>
+          </button>
         </div>
       </aside>
 
