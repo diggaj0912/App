@@ -3,7 +3,7 @@ import { Link, useNavigate, Navigate } from "react-router-dom";
 import {
   Search, Bell, Settings, Image as ImageIcon, Paperclip, Calendar as CalendarIcon,
   Heart, MessageSquare, Share, Bookmark, Users, HelpCircle,
-  Award, Folder, Plus, ArrowRight, LogOut
+  Award, Folder, Plus, ArrowRight, LogOut, User
 } from "lucide-react";
 import { auth } from "../firebase";
 import { signOut } from "firebase/auth";
@@ -99,6 +99,9 @@ export default function Community() {
               </Link>
               <Link to="/resources" className="flex items-center gap-3 px-4 py-3 text-gray-600 hover:bg-white hover:shadow-sm rounded-xl transition-all font-medium text-sm">
                 <Folder className="w-5 h-5" /> Resources
+              </Link>
+              <Link to="/profile" className="flex items-center gap-3 px-4 py-3 text-gray-600 hover:bg-white hover:shadow-sm rounded-xl transition-all font-medium text-sm">
+                <User className="w-5 h-5" /> Profile
               </Link>
             </nav>
 

@@ -24,7 +24,7 @@ export default function Signup() {
     e.preventDefault();
     if (form.email && form.password && form.fullName) {
       try {
-        const res = await fetch("/signup", {
+        const res = await fetch("https://app-production-2003.up.railway.app/signup", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ email: form.email, password: form.password }),
@@ -47,11 +47,25 @@ export default function Signup() {
     try {
       const result = await signInWithPopup(auth, provider);
       const user = result.user;
-      localStorage.setItem("user", user.email || user.uid);
+
+      await fetch("https://app-production-2003.up.railway.app/save-user", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          email: user.email,
+          name: user.displayName,
+          photo: user.photoURL,
+        }),
+      });
+
+      localStorage.setItem("user", JSON.stringify(user));
       alert("Google Login Success 🚀");
       navigate("/community");
-    } catch (error) {
+    } catch (error: any) {
       console.error(error);
+      if (error.code === 'auth/popup-closed-by-user') {
+        return; // User closed the popup, ignore
+      }
       alert("Google Login Failed");
     }
   };

@@ -20,7 +20,7 @@ export default function Event() {
       try {
         const user = localStorage.getItem("user");
         if (user) {
-          const res = await fetch(`/events/${user}`);
+          const res = await fetch(`https://app-production-2003.up.railway.app/events/${user}`);
           const data = await res.json();
           setEvents(data);
         }
