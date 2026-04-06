@@ -24,7 +24,7 @@ export default function Signup() {
     e.preventDefault();
     if (form.email && form.password && form.fullName) {
       try {
-        const res = await fetch("https://app-production-2003.up.railway.app/signup", {
+        const res = await fetch("/signup", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ email: form.email, password: form.password }),
@@ -48,7 +48,7 @@ export default function Signup() {
       const result = await signInWithPopup(auth, provider);
       const user = result.user;
 
-      await fetch("https://app-production-2003.up.railway.app/save-user", {
+      await fetch("/save-user", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({

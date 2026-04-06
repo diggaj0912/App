@@ -60,7 +60,7 @@ export default function CreateEvent() {
   const handleSubmit = async (e: any) => {
     e.preventDefault();
     try {
-      const res = await fetch("https://app-production-2003.up.railway.app/create-event", {
+      const res = await fetch("/create-event", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({

@@ -26,13 +26,13 @@ export default function Profile() {
 
     if (storedUser.email) {
       // Fetch user events
-      fetch(`https://app-production-2003.up.railway.app/events/${storedUser.email}`)
+      fetch(`/events/${storedUser.email}`)
         .then(res => res.json())
         .then(data => setEvents(data))
         .catch(err => console.error("Error fetching events:", err));
 
       // Fetch user communities
-      fetch(`https://app-production-2003.up.railway.app/communities/${storedUser.email}`)
+      fetch(`/communities/${storedUser.email}`)
         .then(res => res.json())
         .then(data => setCommunities(data))
         .catch(err => console.error("Error fetching communities:", err));
@@ -42,7 +42,7 @@ export default function Profile() {
   const createCommunity = async () => {
     if (!communityName || !user?.email) return;
     try {
-      await fetch("https://app-production-2003.up.railway.app/create-community", {
+      await fetch("/create-community", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -53,7 +53,7 @@ export default function Profile() {
       alert("Community Created 🚀");
       setCommunityName("");
       // Refresh communities
-      fetch(`https://app-production-2003.up.railway.app/communities/${user.email}`)
+      fetch(`/communities/${user.email}`)
         .then(res => res.json())
         .then(data => setCommunities(data));
     } catch (err) {

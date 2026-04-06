@@ -22,7 +22,7 @@ export default function Login() {
     e.preventDefault();
     if (form.email && form.password) {
       try {
-        const res = await fetch("https://app-production-2003.up.railway.app/login", {
+        const res = await fetch("/login", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ email: form.email, password: form.password }),
@@ -48,7 +48,7 @@ export default function Login() {
       const result = await signInWithPopup(auth, provider);
       const user = result.user;
 
-      await fetch("https://app-production-2003.up.railway.app/save-user", {
+      await fetch("/save-user", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -76,7 +76,7 @@ export default function Login() {
       const result = await signInWithPopup(auth, provider);
       const user = result.user;
 
-      await fetch("https://app-production-2003.up.railway.app/save-user", {
+      await fetch("/save-user", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
