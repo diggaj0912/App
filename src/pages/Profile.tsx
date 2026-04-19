@@ -1,9 +1,11 @@
 import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { motion } from "framer-motion";
 import { 
   Grid, User, Calendar, Users, Activity, HelpCircle, LogOut,
   Bell, Settings, CalendarCheck, Network, Award
 } from "lucide-react";
+import { socket } from "../App";
 
 export default function Profile() {
   const navigate = useNavigate();
@@ -15,11 +17,27 @@ export default function Profile() {
   
   const [events, setEvents] = useState<any[]>([]);
   const [communities, setCommunities] = useState<any[]>([]);
+  const [stats, setStats] = useState({ events: 0, communities: 0 });
 
   // Toggles
   const [emailNotif, setEmailNotif] = useState(true);
   const [dmNotif, setDmNotif] = useState(true);
   const [commNotif, setCommNotif] = useState(false);
+  const [localImage, setLocalImage] = useState<string | null>(localStorage.getItem("profileImage"));
+
+  const handleImage = (e: any) => {
+    const file = e.target.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+
+    reader.onloadend = () => {
+      const result = reader.result as string;
+      localStorage.setItem("profileImage", result);
+      setLocalImage(result);
+    };
+
+    reader.readAsDataURL(file);
+  };
 
   useEffect(() => {
     const rawUser = localStorage.getItem("user");
@@ -39,6 +57,19 @@ export default function Profile() {
     setEmail(storedUser.email || "alexandria.c@curatorhq.com");
 
     if (storedUser.email) {
+      const fetchStats = () => {
+        fetch(`/user-stats/${encodeURIComponent(storedUser.email)}`)
+          .then(res => res.json())
+          .then(data => setStats(data))
+          .catch(() => {});
+      };
+      
+      fetchStats();
+
+      socket.on("event-created", () => {
+        fetchStats();
+      });
+
       fetch(`/events/${encodeURIComponent(storedUser.email)}`)
         .then(res => res.json())
         .then(data => setEvents(data))
@@ -49,6 +80,10 @@ export default function Profile() {
         .then(data => setCommunities(data))
         .catch(() => {});
     }
+
+    return () => {
+      socket.off("event-created");
+    };
   }, []);
 
   const handleSave = () => {
@@ -127,7 +162,7 @@ export default function Profile() {
             <div className="flex items-center gap-4 text-gray-600">
               <button className="p-2 rounded-full hover:bg-gray-100 transition-colors"><Bell className="w-5 h-5" /></button>
               <button className="p-2 rounded-full hover:bg-gray-100 transition-colors"><Settings className="w-5 h-5" /></button>
-              <img src={user.photoURL || "https://picsum.photos/seed/alex/100/100"} alt="User" className="w-9 h-9 rounded-full ml-2 border border-gray-200" />
+              <img src={localImage || user.photoURL || "https://picsum.photos/seed/alex/100/100"} alt="User" className="w-9 h-9 rounded-full ml-2 border border-gray-200" />
             </div>
           </div>
         </header>
@@ -138,8 +173,12 @@ export default function Profile() {
             <div className="h-64 bg-[#f1f3f5] rounded-3xl w-full"></div>
             <div className="absolute -bottom-12 left-10 flex items-end">
               <div className="relative">
-                <div className="w-32 h-32 rounded-full overflow-hidden border-4 border-white shadow-lg bg-white">
-                  <img src={user.photoURL || "https://picsum.photos/seed/alex/200/200"} alt="Profile" className="w-full h-full object-cover" />
+                <div className="w-32 h-32 rounded-full overflow-hidden border-4 border-white shadow-lg bg-white relative group cursor-pointer">
+                  <img src={localImage || user.photoURL || "https://picsum.photos/seed/alex/200/200"} alt="Profile" className="w-full h-full object-cover group-hover:opacity-75 transition-opacity" />
+                  <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity bg-black/30 text-white font-semibold text-xs text-center p-2 text-shadow-sm select-none pointer-events-none">
+                    Upload Photo
+                  </div>
+                  <input type="file" onChange={handleImage} className="absolute inset-0 w-full h-full opacity-0 cursor-pointer" accept="image/*" />
                 </div>
               </div>
               <div className="mb-2 ml-6">
@@ -150,37 +189,21 @@ export default function Profile() {
           </div>
 
           {/* Stats Cards */}
-          <div className="grid grid-cols-3 gap-6 mb-10">
-            <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 flex items-center gap-5">
-              <div className="w-12 h-12 rounded-xl bg-indigo-50 text-indigo-500 flex items-center justify-center">
-                <CalendarCheck className="w-6 h-6" />
-              </div>
-              <div>
-                <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1">Events Attended</p>
-                <p className="text-3xl font-bold text-gray-900">{events.length > 0 ? events.length : 42}</p>
-              </div>
+          <motion.div 
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            className="grid grid-cols-2 gap-4 mb-10"
+          >
+            <div className="bg-white p-5 rounded-xl border border-gray-100 shadow-sm text-center">
+              <h3 className="text-xl font-bold">{stats.events}</h3>
+              <p className="text-gray-500 text-sm">Events Created</p>
             </div>
-            
-            <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 flex items-center gap-5">
-              <div className="w-12 h-12 rounded-xl bg-emerald-50 text-emerald-500 flex items-center justify-center">
-                <Network className="w-6 h-6" />
-              </div>
-              <div>
-                <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1">Communities Joined</p>
-                <p className="text-3xl font-bold text-gray-900">{communities.length > 0 ? communities.length : 12}</p>
-              </div>
+          
+            <div className="bg-white p-5 rounded-xl border border-gray-100 shadow-sm text-center">
+              <h3 className="text-xl font-bold">{stats.communities}</h3>
+              <p className="text-gray-500 text-sm">Communities Joined</p>
             </div>
-            
-            <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 flex items-center gap-5">
-              <div className="w-12 h-12 rounded-xl bg-amber-50 text-amber-500 flex items-center justify-center">
-                <Award className="w-6 h-6" />
-              </div>
-              <div>
-                <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1">Certificates Earned</p>
-                <p className="text-3xl font-bold text-gray-900">08</p>
-              </div>
-            </div>
-          </div>
+          </motion.div>
 
           {/* Settings Section */}
           <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">

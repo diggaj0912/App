@@ -3,9 +3,24 @@ import cors from "cors";
 import { createServer as createViteServer } from "vite";
 import path from "path";
 import mongoose from "mongoose";
+import http from "http";
+import { Server } from "socket.io";
 
 async function startServer() {
   const app = express();
+  const server = http.createServer(app);
+  const io = new Server(server, {
+    cors: { origin: "*" }
+  });
+
+  io.on("connection", (socket) => {
+    console.log("User connected:", socket.id);
+    
+    socket.on("send-notification", (data) => {
+      io.emit("receive-notification", data);
+    });
+  });
+
   app.use(cors());
   app.use(express.json());
 
@@ -27,6 +42,8 @@ async function startServer() {
     password?: string;
     college?: string;
     role?: string;
+    username?: string;
+    bio?: string;
   }
   const userSchema = new mongoose.Schema<IUser>({
     email: String,
@@ -35,6 +52,8 @@ async function startServer() {
     password: String, // For email/password users
     college: String,
     role: String,
+    username: String,
+    bio: String,
   });
   const User = mongoose.models.User || mongoose.model<IUser>("User", userSchema);
 
@@ -87,6 +106,20 @@ async function startServer() {
     teamDetails: String,
   });
   const EventRegistration = mongoose.models.EventRegistration || mongoose.model<IEventRegistration>("EventRegistration", eventRegistrationSchema);
+
+  interface IMessage {
+    communityId?: string;
+    user?: string;
+    text?: string;
+    createdAt?: Date;
+  }
+  const messageSchema = new mongoose.Schema<IMessage>({
+    communityId: String,
+    user: String,
+    text: String,
+    createdAt: { type: Date, default: Date.now }
+  });
+  const Message = mongoose.models.Message || mongoose.model<IMessage>("Message", messageSchema);
 
   // ------------------ BULK EMAIL ------------------
   app.post("/bulk-email", async (req, res) => {
@@ -190,17 +223,50 @@ async function startServer() {
     const { email, name, photo } = req.body;
     try {
       if (mongoose.connection.readyState !== 1) {
-        return res.json({ email, name, photo });
+        return res.json({ isNewUser: true });
       }
       let user = await User.findOne({ email });
       if (!user) {
         user = new User({ email, name, photo });
         await user.save();
+        return res.json({ isNewUser: true });
       }
-      res.json(user);
+      res.json({ isNewUser: false });
     } catch (err) {
       console.error("Error in /save-user:", err);
       res.status(500).json({ error: "Failed to save user" });
+    }
+  });
+
+  // ------------------ UPDATE PROFILE ------------------
+  app.post("/update-profile", async (req, res) => {
+    const { email, username, bio } = req.body;
+    try {
+      if (mongoose.connection.readyState !== 1) {
+        return res.json({ message: "Profile updated (Mock Mode)" });
+      }
+      await User.findOneAndUpdate({ email }, { username, bio });
+      res.json({ message: "Profile updated successfully" });
+    } catch (err) {
+      console.error("Error in /update-profile:", err);
+      res.status(500).json({ error: "Failed to update profile" });
+    }
+  });
+
+  // ------------------ GET USER STATS ------------------
+  app.get("/user-stats/:email", async (req, res) => {
+    try {
+      if (mongoose.connection.readyState !== 1) {
+        return res.json({ events: 0, communities: 0 });
+      }
+      const email = req.params.email;
+      const eventCount = await Event.countDocuments({ owner: email });
+      const communityCount = await Community.countDocuments({ members: email });
+
+      res.json({ events: eventCount, communities: communityCount });
+    } catch (err) {
+      console.error("Error fetching stats:", err);
+      res.status(500).json({ error: "Failed to fetch stats" });
     }
   });
 
@@ -208,10 +274,13 @@ async function startServer() {
   app.post("/create-event", async (req, res) => {
     try {
       if (mongoose.connection.readyState !== 1) {
+        io.emit("event-created");
         return res.json({ message: "Event created (Mock Mode)", event: req.body });
       }
       const event = new Event(req.body);
       await event.save();
+      
+      io.emit("event-created");
       res.json({ message: "Event created", event });
     } catch (err) {
       console.error("Error in /create-event:", err);
@@ -287,6 +356,40 @@ async function startServer() {
     }
   });
 
+  // ------------------ CHAT ------------------
+  app.post("/send-message", async (req, res) => {
+    try {
+      if (mongoose.connection.readyState !== 1) {
+        const mockMsg = { ...req.body, createdAt: new Date() };
+        io.emit("new-message", mockMsg);
+        return res.json(mockMsg);
+      }
+      const msg = new Message(req.body);
+      await msg.save();
+
+      io.emit("new-message", msg);
+      res.json(msg);
+    } catch (err) {
+      console.error("Error sending message:", err);
+      res.status(500).json({ error: "Failed to send message" });
+    }
+  });
+
+  app.get("/messages/:communityId", async (req, res) => {
+    try {
+      if (mongoose.connection.readyState !== 1) {
+        return res.json([]);
+      }
+      const messages = await Message.find({
+        communityId: req.params.communityId
+      });
+      res.json(messages);
+    } catch (err) {
+      console.error("Error fetching messages:", err);
+      res.status(500).json({ error: "Failed to fetch messages" });
+    }
+  });
+
   // Vite middleware for development
   if (process.env.NODE_ENV !== "production") {
     const vite = await createViteServer({
@@ -306,7 +409,7 @@ async function startServer() {
   // Uses process.env.PORT for Railway, defaults to 3000 for local AI Studio preview
   const PORT = process.env.PORT || 3000;
 
-  app.listen(PORT as number, "0.0.0.0", () => {
+  server.listen(PORT as number, "0.0.0.0", () => {
     console.log(`Server running on port ${PORT}`);
   });
 }

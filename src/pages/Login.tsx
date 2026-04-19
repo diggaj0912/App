@@ -48,7 +48,7 @@ export default function Login() {
       const result = await signInWithPopup(auth, provider);
       const user = result.user;
 
-      await fetch("/save-user", {
+      const res = await fetch("/save-user", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -58,9 +58,14 @@ export default function Login() {
         }),
       });
 
+      const data = await res.json();
       localStorage.setItem("user", JSON.stringify(user));
-      alert("Google Login Success 🚀");
-      navigate("/community");
+      
+      if (!data.isNewUser) {
+        navigate("/dashboard");
+      } else {
+        navigate("/onboarding");
+      }
     } catch (error: any) {
       console.error(error);
       if (error.code === 'auth/popup-closed-by-user') {
@@ -76,7 +81,7 @@ export default function Login() {
       const result = await signInWithPopup(auth, provider);
       const user = result.user;
 
-      await fetch("/save-user", {
+      const res = await fetch("/save-user", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -86,9 +91,14 @@ export default function Login() {
         }),
       });
 
+      const data = await res.json();
       localStorage.setItem("user", JSON.stringify(user));
-      alert("GitHub Login Success 🚀");
-      navigate("/community");
+      
+      if (!data.isNewUser) {
+        navigate("/dashboard");
+      } else {
+        navigate("/onboarding");
+      }
     } catch (error: any) {
       console.error(error);
       if (error.code === 'auth/popup-closed-by-user') {

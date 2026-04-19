@@ -4,6 +4,8 @@
  */
 
 import { Routes, Route } from "react-router-dom";
+import { useEffect } from "react";
+import { io } from "socket.io-client";
 import Home from "./pages/Home";
 import Dashboard from "./pages/Dashboard";
 import Event from "./pages/Event";
@@ -14,9 +16,22 @@ import Feed from "./pages/Feed";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import Profile from "./pages/Profile";
+import Onboarding from "./pages/Onboarding";
 import GenericPage from "./pages/GenericPage";
 
+export const socket = io();
+
 function App() {
+  useEffect(() => {
+    socket.on("receive-notification", (data: any) => {
+      alert(data.message);
+    });
+
+    return () => {
+      socket.off("receive-notification");
+    };
+  }, []);
+
   return (
     <Routes>
       <Route path="/" element={<Home />} />
@@ -28,6 +43,7 @@ function App() {
       <Route path="/feed" element={<Feed />} />
       <Route path="/login" element={<Login />} />
       <Route path="/signup" element={<Signup />} />
+      <Route path="/onboarding" element={<Onboarding />} />
       <Route path="/profile" element={<Profile />} />
       
       {/* Footer / Extra Pages */}

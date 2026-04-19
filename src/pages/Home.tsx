@@ -19,7 +19,7 @@ import {
 } from 'lucide-react';
 
 const Navbar = () => (
-  <nav className="fixed top-0 w-full z-50 bg-surface/80 backdrop-blur-xl shadow-[0_20px_40px_rgba(27,28,29,0.04)] h-16 flex justify-between items-center px-6 md:px-8 transition-all duration-300">
+  <nav className="fixed top-4 left-1/2 -translate-x-1/2 w-[95%] max-w-5xl z-50 backdrop-blur-md bg-white/10 border border-white/20 shadow-lg rounded-2xl h-16 flex justify-between items-center px-6 transition-all duration-300">
     <div className="flex items-center gap-8">
       <span className="text-xl font-bold tracking-tighter text-on-surface font-headline">
         UptoHack
@@ -44,9 +44,9 @@ const Hero = () => (
       <div className="absolute bottom-[-10%] left-[-5%] w-[600px] h-[600px] bg-tertiary/5 rounded-full blur-[120px]"></div>
     </div>
     <motion.div
-      initial={{ opacity: 0, y: 20 }}
+      initial={{ opacity: 0, y: 40 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.8, ease: 'easeOut' }}
+      transition={{ duration: 0.5, ease: 'easeOut' }}
       className="relative z-10 max-w-5xl w-full text-center space-y-8"
     >
       <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-surface-container-low text-primary text-xs font-label uppercase tracking-widest font-bold">
@@ -62,10 +62,10 @@ const Hero = () => (
         The elite ecosystem for modern event organizers and high-impact communities. Sophisticated tools, seamless integration, effortless growth.
       </p>
       <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-4">
-        <Link to="/login" className="bg-gradient-to-br from-primary to-primary-container text-on-primary px-8 py-4 rounded-xl font-semibold shadow-lg shadow-primary/20 hover:scale-95 transition-all duration-300 inline-block">
+        <Link to="/login" className="bg-gradient-to-br from-[#7c3aed] to-[#6d28d9] text-white px-8 py-4 rounded-xl font-semibold shadow-lg shadow-purple-500/30 hover:scale-105 transition-all duration-300 inline-block">
           Go to Dashboard
         </Link>
-        <Link to="/feed" className="bg-surface-container-highest text-primary px-8 py-4 rounded-xl font-semibold hover:bg-surface-container-low transition-all duration-300 inline-block">
+        <Link to="/feed" className="bg-white/50 border border-black/5 backdrop-blur-md text-[#7c3aed] px-8 py-4 rounded-xl font-semibold hover:scale-105 transition-all duration-300 inline-block">
           Explore Communities
         </Link>
       </div>

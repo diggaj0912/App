@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import { useState, useEffect } from "react";
 import {
   Search,
   Bell,
@@ -19,10 +20,42 @@ import {
 } from "lucide-react";
 
 export default function Dashboard() {
+  const [time, setTime] = useState("");
+  const [dark, setDark] = useState(document.documentElement.classList.contains("dark"));
+
+  const toggleDark = () => {
+    setDark(!dark);
+    document.documentElement.classList.toggle("dark");
+  };
+
+  const notifyAll = () => {
+    const { socket } = require("../App");
+    socket.emit("send-notification", {
+      message: "New event created 🚀"
+    });
+  };
+
+  const userString = localStorage.getItem("user");
+  let user: any = {};
+  try {
+    user = JSON.parse(userString || "{}");
+  } catch (e) {
+    user = { email: userString };
+  }
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      const now = new Date();
+      setTime(now.toLocaleTimeString());
+    }, 1000);
+
+    return () => clearInterval(interval);
+  }, []);
+
   return (
-    <div className="flex h-screen bg-[#f8f9fa] font-sans text-gray-900 overflow-hidden">
+    <div className={`flex h-screen overflow-hidden ${dark ? "bg-slate-900 text-white" : "bg-[#f8f9fa] font-sans text-gray-900"}`}>
       {/* Sidebar */}
-      <aside className="w-64 bg-white border-r border-gray-100 flex-col justify-between hidden md:flex z-10 shrink-0">
+      <aside className={`w-64 border-r flex-col justify-between hidden md:flex z-10 shrink-0 ${dark ? "bg-slate-800 border-slate-700" : "bg-white border-gray-100"}`}>
         <div>
           {/* Logo */}
           <div className="h-20 flex items-center px-6 gap-3">
@@ -59,10 +92,14 @@ export default function Dashboard() {
         </div>
 
         <div className="p-4 space-y-2 mb-4">
-          <Link to="/create-event" className="w-full bg-[#7c3aed] text-white py-3.5 rounded-xl font-medium text-sm flex items-center justify-center gap-2 shadow-lg shadow-purple-500/20 hover:bg-[#6d28d9] transition-colors">
+          <Link to="/create-event" className="w-full bg-[#7c3aed] text-white py-3.5 rounded-xl font-medium text-sm flex items-center justify-center gap-2 shadow-lg shadow-purple-500/20 hover:scale-105 hover:bg-[#6d28d9] transition-all">
             <Plus className="w-4 h-4" />
             Create Event
           </Link>
+          <button onClick={notifyAll} className="w-full bg-emerald-500 text-white py-3.5 rounded-xl font-medium text-sm flex items-center justify-center gap-2 shadow-lg shadow-emerald-500/20 hover:scale-105 transition-all mt-4">
+            <Bell className="w-4 h-4" />
+            Test Notifications
+          </button>
           <button onClick={() => alert("Help Center opened")} className="w-full flex items-center gap-3 px-4 py-3 text-gray-600 hover:bg-gray-50 rounded-xl transition-colors font-medium text-sm mt-4">
             <HelpCircle className="w-5 h-5" />
             Help
@@ -77,16 +114,22 @@ export default function Dashboard() {
       {/* Main Content */}
       <div className="flex-1 flex flex-col h-screen overflow-hidden">
         {/* Topbar */}
-        <header className="h-20 bg-[#f8f9fa] flex items-center justify-between px-8 shrink-0">
-          <div className="flex items-center bg-white border border-gray-100 rounded-full px-4 py-2.5 w-96 shadow-sm">
-            <Search className="w-4 h-4 text-gray-400 mr-3" />
-            <input
-              type="text"
-              placeholder="Search communities..."
-              className="bg-transparent border-none outline-none text-sm w-full placeholder:text-gray-400"
-            />
+        <header className={`h-20 flex items-center justify-between px-8 shrink-0 ${dark ? "bg-slate-900" : "bg-[#f8f9fa]"}`}>
+          <div className="flex items-center gap-4">
+            <div className={`flex items-center border rounded-full px-4 py-2.5 w-72 shadow-sm ${dark ? "bg-slate-800 border-slate-700" : "bg-white border-gray-100"}`}>
+              <Search className="w-4 h-4 text-gray-400 mr-3" />
+              <input
+                type="text"
+                placeholder="Search communities..."
+                className="bg-transparent border-none outline-none text-sm w-full placeholder:text-gray-400"
+              />
+            </div>
+            <div className={`text-sm font-medium ${dark ? "text-gray-300" : "text-gray-500"}`}>{time}</div>
           </div>
           <div className="flex items-center gap-4">
+            <button onClick={toggleDark} className="p-2 text-sm font-bold border rounded-xl hover:bg-opacity-50 transition-colors">
+              {dark ? "☀️ Light" : "🌙 Dark"}
+            </button>
             <button onClick={() => alert("Notifications")} className="p-2 text-gray-400 hover:text-gray-600 transition-colors">
               <Bell className="w-5 h-5" />
             </button>
@@ -104,8 +147,10 @@ export default function Dashboard() {
           <div className="max-w-6xl mx-auto">
             {/* Greeting */}
             <div className="mt-4 mb-10">
-              <h1 className="text-4xl font-bold text-gray-900 tracking-tight">Good Morning, Alex.</h1>
-              <p className="text-gray-500 mt-3 text-lg">
+              <h1 className="text-4xl font-bold tracking-tight">
+                Welcome back, {user.displayName || user.name || user.email || 'Guest'} 👋
+              </h1>
+              <p className={`${dark ? "text-slate-400" : "text-gray-500"} mt-3 text-lg`}>
                 Your community engagement is up by <span className="text-[#7c3aed] font-bold">14%</span> this week. Here is what's happening in your networks.
               </p>
             </div>

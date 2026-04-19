@@ -3,14 +3,60 @@ import { Link, useNavigate, Navigate } from "react-router-dom";
 import {
   Search, Bell, Settings, Image as ImageIcon, Paperclip, Calendar as CalendarIcon,
   Heart, MessageSquare, Share, Bookmark, Users, HelpCircle,
-  Award, Folder, Plus, ArrowRight, LogOut, User
+  Award, Folder, Plus, ArrowRight, LogOut, User, Send
 } from "lucide-react";
 import { auth } from "../firebase";
 import { signOut } from "firebase/auth";
+import { socket } from "../App";
 
 export default function Community() {
   const navigate = useNavigate();
-  const user = localStorage.getItem("user");
+  const rawUser = localStorage.getItem("user");
+  let user: any = null;
+  if(rawUser) {
+    try {
+      user = JSON.parse(rawUser);
+    } catch(e) {
+      user = { email: rawUser, name: rawUser.split('@')[0] };
+    }
+  }
+
+  const [messages, setMessages] = useState<any[]>([]);
+  const [msgInput, setMsgInput] = useState("");
+  const communityId = "global-collective-123";
+
+  useEffect(() => {
+    if(!user) return;
+    fetch(`/messages/${communityId}`)
+      .then(res => res.json())
+      .then(data => {
+        if (Array.isArray(data)) setMessages(data);
+      })
+      .catch(e => console.error("Could not load messages:", e));
+
+    socket.on("new-message", (msg) => {
+      setMessages(prev => [...prev, msg]);
+    });
+
+    return () => {
+      socket.off("new-message");
+    };
+  }, [user]);
+
+  const sendMessage = async () => {
+    if(!msgInput.trim()) return;
+    const text = msgInput;
+    setMsgInput("");
+    await fetch("/send-message", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        communityId,
+        user: user.email || user.name,
+        text,
+      }),
+    });
+  };
 
   if (!user) {
     return <Navigate to="/login" />;
@@ -129,6 +175,43 @@ export default function Community() {
             
             {/* Feed Column */}
             <div className="flex-1 space-y-6">
+
+              {/* Live Chat Component */}
+              <div className="bg-white rounded-3xl p-6 shadow-sm border border-gray-100 flex flex-col h-[400px]">
+                <h3 className="text-lg font-bold text-gray-900 border-b pb-4 mb-4 flex items-center gap-2">
+                  <div className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></div>
+                  Live Lounge Chat
+                </h3>
+                
+                <div className="flex-1 overflow-y-auto space-y-4 mb-4 pr-2">
+                  {messages.length === 0 ? (
+                    <div className="text-sm text-gray-400 text-center mt-10">No messages yet. Say hi!</div>
+                  ) : (
+                    messages.map((m, i) => (
+                      <div key={i} className={`flex flex-col ${m.user === (user.email || user.name) ? "items-end" : "items-start"}`}>
+                        <span className="text-[10px] text-gray-400 mb-1">{m.user?.split('@')[0]}</span>
+                        <div className={`px-4 py-2 rounded-2xl max-w-[80%] text-sm ${m.user === (user.email || user.name) ? "bg-[#7c3aed] text-white" : "bg-gray-100 text-gray-900"}`}>
+                          {m.text}
+                        </div>
+                      </div>
+                    ))
+                  )}
+                </div>
+
+                <div className="relative flex items-center">
+                  <input 
+                    type="text" 
+                    value={msgInput}
+                    onChange={(e) => setMsgInput(e.target.value)}
+                    onKeyDown={(e) => e.key === "Enter" && sendMessage()}
+                    placeholder="Type in live lounge..." 
+                    className="w-full bg-[#f8f9fa] border border-gray-200 outline-none focus:border-[#7c3aed] focus:ring-2 focus:ring-purple-100 rounded-full py-3 px-5 pr-12 text-sm transition-all"
+                  />
+                  <button onClick={sendMessage} className="absolute right-2 p-2 bg-[#7c3aed] text-white rounded-full hover:bg-[#6d28d9] transition-colors shadow-lg">
+                    <Send className="w-4 h-4" />
+                  </button>
+                </div>
+              </div>
               
               {/* Create Post Input */}
               <div className="bg-white rounded-3xl p-6 shadow-sm border border-gray-100">
