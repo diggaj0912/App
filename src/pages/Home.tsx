@@ -84,10 +84,10 @@ const Hero = () => (
         The elite ecosystem for modern event organizers and high-impact communities. Sophisticated tools, seamless integration, effortless growth.
       </p>
       <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-4">
-        <Link to="/dashboard" className="bg-gradient-to-br from-primary to-primary-container text-on-primary px-8 py-4 rounded-xl font-semibold shadow-lg shadow-primary/20 hover:scale-95 transition-all duration-300 inline-block">
+        <Link to="/login" className="bg-gradient-to-br from-primary to-primary-container text-on-primary px-8 py-4 rounded-xl font-semibold shadow-lg shadow-primary/20 hover:scale-95 transition-all duration-300 inline-block">
           Go to Dashboard
         </Link>
-        <Link to="/community" className="bg-surface-container-highest text-primary px-8 py-4 rounded-xl font-semibold hover:bg-surface-container-low transition-all duration-300 inline-block">
+        <Link to="/feed" className="bg-surface-container-highest text-primary px-8 py-4 rounded-xl font-semibold hover:bg-surface-container-low transition-all duration-300 inline-block">
           Explore Communities
         </Link>
       </div>
@@ -308,16 +308,40 @@ const Footer = () => (
         </div>
         
         {[
-          { title: 'Product', links: ['Features', 'Pricing', 'Integrations', 'Live Events'] },
-          { title: 'Resources', links: ['Documentation', 'API Reference', 'Community Forum', 'Help Center'] },
-          { title: 'Company', links: ['About Us', 'Careers', 'Blog', 'Privacy Policy'] },
+          { 
+            title: 'Product', 
+            links: [
+              { name: 'Features', path: '/features' },
+              { name: 'Pricing', path: '/pricing' },
+              { name: 'Integrations', path: '/integrations' },
+              { name: 'Live Events', path: '/event' }
+            ] 
+          },
+          { 
+            title: 'Resources', 
+            links: [
+              { name: 'Documentation', path: '/documentation' },
+              { name: 'API Reference', path: '/api-reference' },
+              { name: 'Community Forum', path: '/community' },
+              { name: 'Help Center', path: '/help-center' }
+            ] 
+          },
+          { 
+            title: 'Company', 
+            links: [
+              { name: 'About Us', path: '/about' },
+              { name: 'Careers', path: '/careers' },
+              { name: 'Blog', path: '/blog' },
+              { name: 'Privacy Policy', path: '/privacy-policy' }
+            ] 
+          },
         ].map((col, i) => (
           <div key={i}>
             <h4 className="font-bold text-sm mb-6 uppercase tracking-widest font-label text-on-surface">{col.title}</h4>
             <ul className="space-y-4 text-sm text-on-surface-variant">
               {col.links.map((link, j) => (
                 <li key={j}>
-                  <a href="#" onClick={(e) => { e.preventDefault(); alert(`Navigating to ${link}`); }} className="hover:text-primary transition-colors">{link}</a>
+                  <Link to={link.path} className="hover:text-primary transition-colors">{link.name}</Link>
                 </li>
               ))}
             </ul>

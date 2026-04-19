@@ -14,6 +14,7 @@ import Feed from "./pages/Feed";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import Profile from "./pages/Profile";
+import GenericPage from "./pages/GenericPage";
 
 function App() {
   return (
@@ -28,6 +29,18 @@ function App() {
       <Route path="/login" element={<Login />} />
       <Route path="/signup" element={<Signup />} />
       <Route path="/profile" element={<Profile />} />
+      
+      {/* Footer / Extra Pages */}
+      <Route path="/features" element={<GenericPage />} />
+      <Route path="/pricing" element={<GenericPage />} />
+      <Route path="/integrations" element={<GenericPage />} />
+      <Route path="/documentation" element={<GenericPage />} />
+      <Route path="/api-reference" element={<GenericPage />} />
+      <Route path="/help-center" element={<GenericPage />} />
+      <Route path="/about" element={<GenericPage />} />
+      <Route path="/careers" element={<GenericPage />} />
+      <Route path="/blog" element={<GenericPage />} />
+      <Route path="/privacy-policy" element={<GenericPage />} />
     </Routes>
   );
 }

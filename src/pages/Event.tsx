@@ -18,11 +18,25 @@ export default function Event() {
   useEffect(() => {
     const fetchEvents = async () => {
       try {
-        const user = localStorage.getItem("user");
-        if (user) {
-          const res = await fetch(`/events/${user}`);
-          const data = await res.json();
-          setEvents(data);
+        const rawUser = localStorage.getItem("user");
+        let email = "";
+        if (rawUser) {
+          try {
+            const parsed = JSON.parse(rawUser);
+            email = parsed.email || "";
+          } catch (e) {
+            email = rawUser;
+          }
+        }
+        
+        if (email) {
+          const res = await fetch(`/events/${encodeURIComponent(email)}`);
+          if (res.ok) {
+            const data = await res.json();
+            setEvents(data);
+          } else {
+            console.error("Failed to fetch events, status:", res.status);
+          }
         }
       } catch (err) {
         console.error("Failed to fetch events:", err);

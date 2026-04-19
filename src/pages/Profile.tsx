@@ -26,14 +26,20 @@ export default function Profile() {
 
     if (storedUser.email) {
       // Fetch user events
-      fetch(`/events/${storedUser.email}`)
-        .then(res => res.json())
+      fetch(`/events/${encodeURIComponent(storedUser.email)}`)
+        .then(res => {
+          if (!res.ok) throw new Error("Failed to fetch events");
+          return res.json();
+        })
         .then(data => setEvents(data))
         .catch(err => console.error("Error fetching events:", err));
 
       // Fetch user communities
-      fetch(`/communities/${storedUser.email}`)
-        .then(res => res.json())
+      fetch(`/communities/${encodeURIComponent(storedUser.email)}`)
+        .then(res => {
+          if (!res.ok) throw new Error("Failed to fetch communities");
+          return res.json();
+        })
         .then(data => setCommunities(data))
         .catch(err => console.error("Error fetching communities:", err));
     }
@@ -53,8 +59,11 @@ export default function Profile() {
       alert("Community Created 🚀");
       setCommunityName("");
       // Refresh communities
-      fetch(`/communities/${user.email}`)
-        .then(res => res.json())
+      fetch(`/communities/${encodeURIComponent(user.email)}`)
+        .then(res => {
+          if (!res.ok) throw new Error("Failed to fetch communities");
+          return res.json();
+        })
         .then(data => setCommunities(data));
     } catch (err) {
       console.error("Error creating community:", err);
