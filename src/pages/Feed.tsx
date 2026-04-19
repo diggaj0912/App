@@ -59,19 +59,19 @@ export default function Feed() {
             <Calendar className="w-5 h-5 opacity-70" />
             Events
           </Link>
-          <Link to="#" className="flex items-center gap-3 px-4 py-3 text-gray-600 hover:text-gray-900 hover:bg-black/5 rounded-xl font-medium transition-colors">
+          <Link to="/certificates" className="flex items-center gap-3 px-4 py-3 text-gray-600 hover:text-gray-900 hover:bg-black/5 rounded-xl font-medium transition-colors">
             <svg className="w-5 h-5 opacity-70" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z" />
             </svg>
             Certificates
           </Link>
-          <Link to="#" className="flex items-center gap-3 px-4 py-3 text-gray-600 hover:text-gray-900 hover:bg-black/5 rounded-xl font-medium transition-colors">
+          <Link to="/network" className="flex items-center gap-3 px-4 py-3 text-gray-600 hover:text-gray-900 hover:bg-black/5 rounded-xl font-medium transition-colors">
             <svg className="w-5 h-5 opacity-70" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
             </svg>
             Members
           </Link>
-          <Link to="#" className="flex items-center gap-3 px-4 py-3 text-gray-600 hover:text-gray-900 hover:bg-black/5 rounded-xl font-medium transition-colors">
+          <Link to="/resources" className="flex items-center gap-3 px-4 py-3 text-gray-600 hover:text-gray-900 hover:bg-black/5 rounded-xl font-medium transition-colors">
             <svg className="w-5 h-5 opacity-70" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z" />
             </svg>
@@ -79,14 +79,14 @@ export default function Feed() {
           </Link>
           
           <div className="mt-8 px-4">
-            <Button className="w-full bg-[#7c3aed] hover:bg-[#6d28d9] text-white rounded-xl py-6 shadow-md shadow-purple-500/20 font-semibold transition-all hover:-translate-y-0.5">
+            <Link to="/create-post" className="w-full bg-[#7c3aed] hover:bg-[#6d28d9] text-white rounded-xl py-4 shadow-md shadow-purple-500/20 font-semibold transition-all hover:-translate-y-0.5 block text-center">
               Create Post
-            </Button>
+            </Link>
           </div>
         </nav>
 
         <div className="p-4 mt-auto">
-          <Link to="#" className="flex items-center gap-3 px-4 py-3 text-gray-500 hover:text-gray-900 hover:bg-black/5 rounded-xl font-medium transition-colors">
+          <Link to="/help-center" className="flex items-center gap-3 px-4 py-3 text-gray-500 hover:text-gray-900 hover:bg-black/5 rounded-xl font-medium transition-colors">
             <HelpCircle className="w-5 h-5 opacity-70" />
             Help Center
           </Link>
@@ -99,7 +99,7 @@ export default function Feed() {
         <header className="h-16 px-8 flex items-center justify-between border-b border-gray-200/60 bg-[#f8f9fa]/80 backdrop-blur-md sticky top-0 z-20">
           <div className="flex gap-8">
             <Link to="/feed" className="text-sm font-semibold text-[#6d28d9] border-b-2 border-[#6d28d9] h-16 flex items-center pt-0.5 relative top-[1px]">Explore</Link>
-            <Link to="#" className="text-sm font-medium text-gray-500 hover:text-gray-900 h-16 flex items-center transition-colors">Network</Link>
+            <Link to="/network" className="text-sm font-medium text-gray-500 hover:text-gray-900 h-16 flex items-center transition-colors">Network</Link>
             <Link to="/event" className="text-sm font-medium text-gray-500 hover:text-gray-900 h-16 flex items-center transition-colors">Events</Link>
           </div>
 
@@ -112,17 +112,19 @@ export default function Feed() {
                 className="w-64 pl-10 bg-gray-100 border-transparent focus-visible:ring-[#7c3aed] focus-visible:bg-white rounded-full h-9 text-sm"
               />
             </div>
-            <button className="w-9 h-9 flex items-center justify-center text-gray-500 hover:bg-gray-100 rounded-full transition-colors relative">
+            <button onClick={() => alert("No new notifications")} className="w-9 h-9 flex items-center justify-center text-gray-500 hover:bg-gray-100 rounded-full transition-colors relative">
               <Bell className="w-5 h-5" />
               <span className="absolute top-2 right-2.5 w-2 h-2 bg-red-500 rounded-full border-2 border-[#f8f9fa]"></span>
             </button>
-            <button className="w-9 h-9 flex items-center justify-center text-gray-500 hover:bg-gray-100 rounded-full transition-colors">
+            <button onClick={() => alert("Settings menu opened")} className="w-9 h-9 flex items-center justify-center text-gray-500 hover:bg-gray-100 rounded-full transition-colors">
               <Settings className="w-5 h-5" />
             </button>
-            <Avatar className="w-9 h-9 ring-2 ring-[#7c3aed] ring-offset-2 ring-offset-[#f8f9fa] cursor-pointer">
-              <AvatarImage src="https://i.pravatar.cc/150?img=47" alt="User" />
-              <AvatarFallback>U</AvatarFallback>
-            </Avatar>
+            <Link to="/profile">
+              <Avatar className="w-9 h-9 ring-2 ring-[#7c3aed] ring-offset-2 ring-offset-[#f8f9fa] cursor-pointer">
+                <AvatarImage src="https://i.pravatar.cc/150?img=47" alt="User" />
+                <AvatarFallback>U</AvatarFallback>
+              </Avatar>
+            </Link>
           </div>
         </header>
 
@@ -146,17 +148,17 @@ export default function Feed() {
                   />
                   <div className="mt-4 flex items-center justify-between">
                     <div className="flex gap-1">
-                      <button className="p-2 text-gray-400 hover:text-gray-700 hover:bg-gray-100 rounded-full transition-colors">
+                      <button onClick={() => alert("Upload Image")} className="p-2 text-gray-400 hover:text-gray-700 hover:bg-gray-100 rounded-full transition-colors">
                         <ImageIcon className="w-5 h-5" />
                       </button>
-                      <button className="p-2 text-gray-400 hover:text-gray-700 hover:bg-gray-100 rounded-full transition-colors">
+                      <button onClick={() => alert("Add Attachment")} className="p-2 text-gray-400 hover:text-gray-700 hover:bg-gray-100 rounded-full transition-colors">
                         <Paperclip className="w-5 h-5" />
                       </button>
-                      <button className="p-2 text-gray-400 hover:text-gray-700 hover:bg-gray-100 rounded-full transition-colors">
+                      <button onClick={() => alert("Schedule Post")} className="p-2 text-gray-400 hover:text-gray-700 hover:bg-gray-100 rounded-full transition-colors">
                         <Calendar className="w-5 h-5" />
                       </button>
                     </div>
-                    <Button className="bg-[#7c3aed] hover:bg-[#6d28d9] rounded-full px-6 font-semibold shadow-sm">
+                    <Button onClick={() => alert("Post Published!")} className="bg-[#7c3aed] hover:bg-[#6d28d9] rounded-full px-6 font-semibold shadow-sm text-white">
                       Post
                     </Button>
                   </div>
@@ -181,7 +183,7 @@ export default function Feed() {
                     </div>
                   </div>
                 </div>
-                <button className="text-gray-400 hover:text-gray-700 p-1">
+                <button onClick={() => alert("Post options opened")} className="text-gray-400 hover:text-gray-700 p-1">
                   <MoreHorizontal className="w-5 h-5" />
                 </button>
               </div>
@@ -203,20 +205,20 @@ export default function Feed() {
               {/* Actions */}
               <div className="flex items-center justify-between mt-2 pt-4 border-t border-gray-100">
                 <div className="flex gap-6">
-                  <button className="flex items-center gap-2 text-gray-500 hover:text-gray-900 group transition-colors">
+                  <button onClick={() => alert("Liked!")} className="flex items-center gap-2 text-gray-500 hover:text-gray-900 group transition-colors">
                     <Heart className="w-5 h-5 group-hover:fill-red-500 group-hover:text-red-500 transition-colors" />
                     <span className="font-medium text-sm">124</span>
                   </button>
-                  <button className="flex items-center gap-2 text-gray-500 hover:text-gray-900 group transition-colors">
+                  <button onClick={() => alert("Comments opened")} className="flex items-center gap-2 text-gray-500 hover:text-gray-900 group transition-colors">
                     <MessageSquare className="w-5 h-5 group-hover:fill-blue-500 group-hover:text-blue-500 transition-colors" />
                     <span className="font-medium text-sm">18</span>
                   </button>
-                  <button className="flex items-center gap-2 text-gray-500 hover:text-gray-900 transition-colors">
+                  <button onClick={() => alert("Share dialog opened")} className="flex items-center gap-2 text-gray-500 hover:text-gray-900 transition-colors">
                     <Share className="w-5 h-5" />
                     <span className="font-medium text-sm">Share</span>
                   </button>
                 </div>
-                <button className="text-gray-400 hover:text-gray-900 transition-colors">
+                <button onClick={() => alert("Bookmarked!")} className="text-gray-400 hover:text-gray-900 transition-colors">
                   <Bookmark className="w-5 h-5" />
                 </button>
               </div>
@@ -264,18 +266,18 @@ export default function Feed() {
                   </div>
                   <span className="text-sm text-gray-600 font-medium hidden sm:block">Members are already in the lounge</span>
                 </div>
-                <Button className="bg-[#e9d5ff] hover:bg-[#d8b4fe] text-[#6d28d9] font-bold shrink-0">
+                <a href="https://meet.google.com" target="_blank" rel="noopener noreferrer" className="bg-[#e9d5ff] hover:bg-[#d8b4fe] text-[#6d28d9] font-bold shrink-0 px-4 py-2 rounded-md">
                   Join Session
-                </Button>
+                </a>
               </div>
 
               {/* Actions */}
               <div className="flex items-center gap-6 mt-2 pt-4 border-t border-gray-100 text-gray-500">
-                <button className="flex items-center gap-2 hover:text-[#6d28d9] transition-colors">
+                <button onClick={() => alert("Liked!")} className="flex items-center gap-2 hover:text-[#6d28d9] transition-colors">
                   <ThumbsUp className="w-5 h-5" />
                   <span className="font-medium text-sm">56</span>
                 </button>
-                <button className="flex items-center gap-2 hover:text-[#6d28d9] transition-colors">
+                <button onClick={() => alert("Comments opened")} className="flex items-center gap-2 hover:text-[#6d28d9] transition-colors">
                   <MessageCircle className="w-5 h-5" />
                   <span className="font-medium text-sm">12</span>
                 </button>
@@ -316,10 +318,10 @@ export default function Feed() {
               </div>
 
               <div className="mt-6 -mx-6 -mb-6">
-                <button className="w-full bg-[#6d28d9] hover:bg-[#5b21b6] text-white p-4 rounded-b-3xl font-bold text-sm tracking-wide flex items-center justify-between transition-colors">
+                <Link to="/resources" className="w-full bg-[#6d28d9] hover:bg-[#5b21b6] text-white p-4 rounded-b-3xl font-bold text-sm tracking-wide flex items-center justify-between transition-colors">
                   VIEW ALL RESOURCES
                   <ArrowRight className="w-4 h-4" />
-                </button>
+                </Link>
               </div>
             </div>
 
@@ -355,19 +357,19 @@ export default function Feed() {
                 </div>
               </div>
 
-              <Button variant="outline" className="w-full border-gray-200 text-[#6d28d9] font-semibold hover:bg-gray-50 rounded-xl">
+              <Link to="/network" className="w-full border border-gray-200 text-[#6d28d9] font-semibold hover:bg-gray-50 rounded-xl py-2 block text-center">
                 SEE FULL NETWORK
-              </Button>
+              </Link>
             </div>
 
             {/* Footer Links */}
             <div className="px-2 pb-8">
               <div className="flex gap-4 text-xs font-medium text-gray-400 mb-2">
-                <a href="#" className="hover:text-gray-600">PRIVACY</a>
-                <a href="#" className="hover:text-gray-600">TERMS</a>
-                <a href="#" className="hover:text-gray-600">COOKIES</a>
+                <Link to="/privacy-policy" className="hover:text-gray-600">PRIVACY</Link>
+                <Link to="/terms" className="hover:text-gray-600">TERMS</Link>
+                <Link to="/cookies" className="hover:text-gray-600">COOKIES</Link>
               </div>
-              <p className="text-[11px] text-gray-400 block mt-2">© 2024 CURATOR HUB</p>
+              <p className="text-[11px] text-gray-400 block mt-2">© 2024 UPTOHACK HUB</p>
             </div>
 
           </div>

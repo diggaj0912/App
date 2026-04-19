@@ -31,6 +31,9 @@ function App() {
       <Route path="/profile" element={<Profile />} />
       
       {/* Footer / Extra Pages */}
+      <Route path="/network" element={<GenericPage />} />
+      <Route path="/resources" element={<GenericPage />} />
+      <Route path="/create-post" element={<GenericPage />} />
       <Route path="/features" element={<GenericPage />} />
       <Route path="/pricing" element={<GenericPage />} />
       <Route path="/integrations" element={<GenericPage />} />

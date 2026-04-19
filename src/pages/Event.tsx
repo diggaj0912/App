@@ -54,30 +54,8 @@ export default function Event() {
           <Link to="/" className="text-xl font-bold tracking-tight">
             UptoHack
           </Link>
-          <div className="hidden md:flex gap-6">
-            <Link to="/community" className="text-sm text-gray-500 hover:text-gray-900 transition-colors">
-              Communities
-            </Link>
-            <Link to="/event" className="text-sm text-purple-600 font-medium transition-colors">
-              Events
-            </Link>
-            <Link to="#" className="text-sm text-gray-500 hover:text-gray-900 transition-colors">
-              Certificates
-            </Link>
-          </div>
         </div>
         <div className="flex items-center gap-4">
-          <div className="hidden md:flex items-center bg-gray-100 px-3 py-1.5 rounded-full">
-            <Search className="w-4 h-4 text-gray-400 mr-2" />
-            <input
-              type="text"
-              placeholder="Search events..."
-              className="bg-transparent border-none focus:outline-none text-sm text-gray-700 w-48 placeholder:text-gray-400"
-            />
-          </div>
-          <button onClick={() => alert("Notifications")} className="p-2 text-gray-500 hover:bg-gray-100 rounded-full transition-all">
-            <Bell className="w-5 h-5" />
-          </button>
           <Link to="/login" className="w-8 h-8 rounded-full bg-gray-200 overflow-hidden border border-gray-200 hover:ring-2 hover:ring-indigo-500 transition-all">
             <img
               src="https://lh3.googleusercontent.com/aida-public/AB6AXuA8lsF7EjahYQvzMul7Z0r2GeyQlpvZCf_SR0R8foON7kwsJ8aoAFX45_94TM2TJrADixtJ18B419bxaDIu9C_4mMh8ugDCgXjqXpZQCDsRDZ3JnCBahEvuEzaGTZ7ckPYZfePRYbZ1IWadAzmtycVkuKblaW6F9YdMYAKzAeOjJz_OPYIqeuzcNKrc3a_UkSOu4BH9YJPcW1DH_F3NI6NHW00gUKR8zobwV4_ujqHOytWIa67JG2YTIK6fxWc4L19xZ63OiJCh131o"

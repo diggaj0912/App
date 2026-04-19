@@ -55,15 +55,15 @@ export default function Community() {
             />
           </div>
           <div className="flex items-center gap-4">
-            <button className="text-gray-400 hover:text-gray-600 transition-colors">
+            <button onClick={() => alert("No new notifications")} className="text-gray-400 hover:text-gray-600 transition-colors">
               <Bell className="w-5 h-5" />
             </button>
-            <button className="text-gray-400 hover:text-gray-600 transition-colors">
+            <button onClick={() => alert("Settings opened")} className="text-gray-400 hover:text-gray-600 transition-colors">
               <Settings className="w-5 h-5" />
             </button>
-            <div className="w-8 h-8 rounded-full bg-indigo-100 border-2 border-[#7c3aed] overflow-hidden">
+            <Link to="/profile" className="w-8 h-8 rounded-full bg-indigo-100 border-2 border-[#7c3aed] overflow-hidden">
               <img src="https://i.pravatar.cc/150?img=32" alt="Profile" className="w-full h-full object-cover" />
-            </div>
+            </Link>
           </div>
         </div>
       </header>
@@ -105,18 +105,18 @@ export default function Community() {
               </Link>
             </nav>
 
-            <button className="w-full bg-[#7c3aed] text-white py-3 rounded-xl font-medium text-sm hover:bg-[#6d28d9] transition-colors shadow-md shadow-purple-500/20">
+            <Link to="/create-post" className="w-full bg-[#7c3aed] text-white py-3 rounded-xl font-medium text-sm hover:bg-[#6d28d9] transition-colors shadow-md shadow-purple-500/20 text-center block">
               Create Post
-            </button>
+            </Link>
           </div>
 
           <div className="p-6">
-            <button className="flex items-center gap-3 text-gray-500 hover:text-gray-900 transition-colors text-sm font-medium mb-4">
+            <Link to="/help-center" className="flex items-center gap-3 text-gray-500 hover:text-gray-900 transition-colors text-sm font-medium mb-4">
               <HelpCircle className="w-5 h-5" /> Help Center
-            </button>
+            </Link>
             <button 
               onClick={handleLogout}
-              className="flex items-center gap-3 text-red-500 hover:text-red-600 transition-colors text-sm font-medium"
+              className="flex items-center gap-3 text-red-500 hover:text-red-600 transition-colors text-sm font-medium w-full text-left"
             >
               <LogOut className="w-5 h-5" /> Logout
             </button>
@@ -140,11 +140,11 @@ export default function Community() {
                     </div>
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-2">
-                        <button className="p-2 text-gray-500 hover:text-gray-900 hover:bg-gray-50 rounded-lg transition-colors"><ImageIcon className="w-5 h-5" /></button>
-                        <button className="p-2 text-gray-500 hover:text-gray-900 hover:bg-gray-50 rounded-lg transition-colors"><Paperclip className="w-5 h-5" /></button>
-                        <button className="p-2 text-gray-500 hover:text-gray-900 hover:bg-gray-50 rounded-lg transition-colors"><CalendarIcon className="w-5 h-5" /></button>
+                        <button onClick={() => alert("Upload Image")} className="p-2 text-gray-500 hover:text-gray-900 hover:bg-gray-50 rounded-lg transition-colors"><ImageIcon className="w-5 h-5" /></button>
+                        <button onClick={() => alert("Add Attachment")} className="p-2 text-gray-500 hover:text-gray-900 hover:bg-gray-50 rounded-lg transition-colors"><Paperclip className="w-5 h-5" /></button>
+                        <button onClick={() => alert("Schedule Post")} className="p-2 text-gray-500 hover:text-gray-900 hover:bg-gray-50 rounded-lg transition-colors"><CalendarIcon className="w-5 h-5" /></button>
                       </div>
-                      <button className="bg-[#7c3aed] text-white px-6 py-2 rounded-full text-sm font-medium hover:bg-[#6d28d9] transition-colors">
+                      <button onClick={() => alert("Post Published!")} className="bg-[#7c3aed] text-white px-6 py-2 rounded-full text-sm font-medium hover:bg-[#6d28d9] transition-colors">
                         Post
                       </button>
                     </div>
@@ -180,20 +180,20 @@ export default function Community() {
 
                 <div className="flex items-center justify-between pt-2">
                   <div className="flex items-center gap-6">
-                    <button className="flex items-center gap-2 text-gray-500 hover:text-gray-900 transition-colors">
+                    <button onClick={() => alert("Liked!")} className="flex items-center gap-2 text-gray-500 hover:text-gray-900 transition-colors">
                       <Heart className="w-4 h-4 fill-current text-gray-700" />
                       <span className="text-sm font-medium">124</span>
                     </button>
-                    <button className="flex items-center gap-2 text-gray-500 hover:text-gray-900 transition-colors">
+                    <button onClick={() => alert("Comments opened")} className="flex items-center gap-2 text-gray-500 hover:text-gray-900 transition-colors">
                       <MessageSquare className="w-4 h-4 fill-current text-gray-700" />
                       <span className="text-sm font-medium">18</span>
                     </button>
-                    <button className="flex items-center gap-2 text-gray-500 hover:text-gray-900 transition-colors">
+                    <button onClick={() => alert("Share dialog opened")} className="flex items-center gap-2 text-gray-500 hover:text-gray-900 transition-colors">
                       <Share className="w-4 h-4" />
                       <span className="text-sm font-medium">Share</span>
                     </button>
                   </div>
-                  <button className="text-gray-400 hover:text-gray-900 transition-colors">
+                  <button onClick={() => alert("Bookmarked!")} className="text-gray-400 hover:text-gray-900 transition-colors">
                     <Bookmark className="w-5 h-5 fill-current text-gray-700" />
                   </button>
                 </div>
@@ -231,17 +231,17 @@ export default function Community() {
                     </div>
                     <span className="text-sm text-gray-600">Members are already in the lounge</span>
                   </div>
-                  <button className="bg-purple-100 text-[#7c3aed] px-4 py-2 rounded-lg text-xs font-bold tracking-wider hover:bg-purple-200 transition-colors">
+                  <a href="https://meet.google.com" target="_blank" rel="noopener noreferrer" className="bg-purple-100 text-[#7c3aed] px-4 py-2 rounded-lg text-xs font-bold tracking-wider hover:bg-purple-200 transition-colors inline-block text-center">
                     JOIN SESSION
-                  </button>
+                  </a>
                 </div>
 
                 <div className="flex items-center gap-6 pt-2">
-                  <button className="flex items-center gap-2 text-gray-500 hover:text-gray-900 transition-colors">
+                  <button onClick={() => alert("Liked!")} className="flex items-center gap-2 text-gray-500 hover:text-gray-900 transition-colors">
                     <Heart className="w-4 h-4 fill-current text-gray-700" />
                     <span className="text-sm font-medium">56</span>
                   </button>
-                  <button className="flex items-center gap-2 text-gray-500 hover:text-gray-900 transition-colors">
+                  <button onClick={() => alert("Comments opened")} className="flex items-center gap-2 text-gray-500 hover:text-gray-900 transition-colors">
                     <MessageSquare className="w-4 h-4 fill-current text-gray-700" />
                     <span className="text-sm font-medium">12</span>
                   </button>
@@ -281,9 +281,9 @@ export default function Community() {
                   </div>
                 </div>
 
-                <button className="w-full mt-6 bg-[#7c3aed] text-white py-3 rounded-xl text-xs font-bold tracking-widest uppercase flex items-center justify-center gap-2 hover:bg-[#6d28d9] transition-colors">
+                <Link to="/resources" className="w-full mt-6 bg-[#7c3aed] text-white py-3 rounded-xl text-xs font-bold tracking-widest uppercase flex items-center justify-center gap-2 hover:bg-[#6d28d9] transition-colors">
                   View All Resources <ArrowRight className="w-4 h-4" />
-                </button>
+                </Link>
               </div>
 
               {/* Active Members */}
@@ -308,20 +308,20 @@ export default function Community() {
                     +12
                   </div>
                 </div>
-                <button className="w-full py-2.5 rounded-xl border border-purple-200 text-[#7c3aed] text-xs font-bold tracking-widest uppercase hover:bg-purple-50 transition-colors">
+                <Link to="/network" className="w-full py-2.5 rounded-xl border border-purple-200 text-[#7c3aed] text-xs font-bold tracking-widest uppercase hover:bg-purple-50 transition-colors block text-center mt-6">
                   See Full Network
-                </button>
+                </Link>
               </div>
 
               {/* Footer Links */}
-              <div className="flex flex-col gap-4 px-2 pt-4">
+              <div className="flex flex-col gap-4 px-2 pt-4 mb-8">
                 <div className="flex items-center gap-4 text-xs font-medium text-gray-400">
-                  <a href="#" className="hover:text-gray-600">PRIVACY</a>
-                  <a href="#" className="hover:text-gray-600">TERMS</a>
-                  <a href="#" className="hover:text-gray-600">COOKIES</a>
+                  <Link to="/privacy-policy" className="hover:text-gray-600">PRIVACY</Link>
+                  <Link to="/terms" className="hover:text-gray-600">TERMS</Link>
+                  <Link to="/cookies" className="hover:text-gray-600">COOKIES</Link>
                 </div>
                 <p className="text-[10px] text-gray-400 uppercase tracking-wider">
-                  © 2024 CURATOR HUB
+                  © 2024 UPTOHACK HUB
                 </p>
               </div>
 

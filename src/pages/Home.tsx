@@ -13,6 +13,9 @@ import {
   Globe,
   Share2,
   Users,
+  Twitter,
+  Instagram,
+  Linkedin
 } from 'lucide-react';
 
 const Navbar = () => (
@@ -21,33 +24,8 @@ const Navbar = () => (
       <span className="text-xl font-bold tracking-tighter text-on-surface font-headline">
         UptoHack
       </span>
-      <div className="hidden md:flex gap-6">
-        <Link to="/" className="text-primary font-semibold text-sm transition-all duration-300">
-          Home
-        </Link>
-        <Link to="/community" className="text-on-surface-variant hover:text-on-surface text-sm transition-all duration-300">
-          Communities
-        </Link>
-        <Link to="/event" className="text-on-surface-variant hover:text-on-surface text-sm transition-all duration-300">
-          Event
-        </Link>
-      </div>
     </div>
     <div className="flex items-center gap-4">
-      <div className="hidden md:flex items-center bg-surface-container-low px-3 py-1.5 rounded-full">
-        <Search className="text-on-surface-variant w-4 h-4 mr-2" />
-        <input
-          type="text"
-          placeholder="Search events..."
-          className="bg-transparent border-none focus:outline-none text-sm text-on-surface w-40 placeholder:text-outline"
-        />
-      </div>
-      <button onClick={() => alert("Notifications")} className="p-2 text-on-surface-variant hover:bg-surface-container-low rounded-full transition-all">
-        <Bell className="w-5 h-5" />
-      </button>
-      <button onClick={() => alert("Settings")} className="p-2 text-on-surface-variant hover:bg-surface-container-low rounded-full transition-all">
-        <Settings className="w-5 h-5" />
-      </button>
       <Link to="/login" className="w-8 h-8 rounded-full bg-surface-container-high overflow-hidden hover:ring-2 hover:ring-primary transition-all">
         <img
           src="https://lh3.googleusercontent.com/aida-public/AB6AXuA8lsF7EjahYQvzMul7Z0r2GeyQlpvZCf_SR0R8foON7kwsJ8aoAFX45_94TM2TJrADixtJ18B419bxaDIu9C_4mMh8ugDCgXjqXpZQCDsRDZ3JnCBahEvuEzaGTZ7ckPYZfePRYbZ1IWadAzmtycVkuKblaW6F9YdMYAKzAeOjJz_OPYIqeuzcNKrc3a_UkSOu4BH9YJPcW1DH_F3NI6NHW00gUKR8zobwV4_ujqHOytWIa67JG2YTIK6fxWc4L19xZ63OiJCh131o"
@@ -295,14 +273,14 @@ const Footer = () => (
             Redefining the digital community experience through elegant design and seamless utility.
           </p>
           <div className="flex gap-4">
-            <a href="#" onClick={(e) => { e.preventDefault(); alert("Opening social link..."); }} className="text-on-surface-variant hover:text-primary transition-colors">
-              <Share2 className="w-5 h-5" />
+            <a href="#" onClick={(e) => { e.preventDefault(); alert("Opening Twitter..."); }} className="text-on-surface-variant hover:text-primary transition-colors">
+              <Twitter className="w-5 h-5" />
             </a>
-            <a href="#" onClick={(e) => { e.preventDefault(); alert("Opening social link..."); }} className="text-on-surface-variant hover:text-primary transition-colors">
-              <Globe className="w-5 h-5" />
+            <a href="#" onClick={(e) => { e.preventDefault(); alert("Opening Instagram..."); }} className="text-on-surface-variant hover:text-primary transition-colors">
+              <Instagram className="w-5 h-5" />
             </a>
-            <a href="#" onClick={(e) => { e.preventDefault(); alert("Opening social link..."); }} className="text-on-surface-variant hover:text-primary transition-colors">
-              <Users className="w-5 h-5" />
+            <a href="#" onClick={(e) => { e.preventDefault(); alert("Opening LinkedIn..."); }} className="text-on-surface-variant hover:text-primary transition-colors">
+              <Linkedin className="w-5 h-5" />
             </a>
           </div>
         </div>
@@ -348,18 +326,19 @@ const Footer = () => (
           </div>
         ))}
       </div>
-      
-      <div className="pt-12 border-t border-outline-variant/20 flex flex-col md:flex-row justify-between items-center gap-6">
-        <div className="text-xs font-label text-outline uppercase tracking-widest">
-          © 2024 UptoHack Technologies Inc. All rights reserved.
-        </div>
-        <div className="flex items-center gap-6 text-xs font-label text-outline uppercase tracking-widest">
-          <span className="flex items-center gap-2">
-            <span className="w-1.5 h-1.5 rounded-full bg-tertiary"></span> 
-            Systems Operational
-          </span>
-          <span className="font-mono text-[10px]">UptoHack Pro v2.4.1</span>
-        </div>
+
+      {/* Massive Animated Footer Text */}
+      <div className="w-full flex justify-center items-center overflow-hidden pointer-events-none mt-12 pt-8">
+        <motion.div
+          initial={{ opacity: 0, y: 80, scale: 0.9 }}
+          whileInView={{ opacity: 1, y: 0, scale: 1 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.8, ease: 'easeOut' }}
+        >
+          <h1 className="text-[16vw] md:text-[18vw] font-black tracking-tighter leading-none bg-gradient-to-b from-on-surface/20 to-transparent text-transparent bg-clip-text select-none uppercase">
+            UPTOHACK
+          </h1>
+        </motion.div>
       </div>
     </div>
   </footer>
