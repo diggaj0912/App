@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
 import {
   Bell,
   Settings,
@@ -17,8 +17,14 @@ import {
   FileCheck,
   ArrowRight
 } from "lucide-react";
+import { fetchWithAuth } from "../utils/api";
 
 export default function CreateEvent() {
+  const user = localStorage.getItem("user");
+  if (!user) {
+    return <Navigate to="/login" />;
+  }
+
   const [form, setForm] = useState({
     title: "",
     description: "",
@@ -29,6 +35,8 @@ export default function CreateEvent() {
     meeting: true,
     certificate: false,
   });
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
 
   const handleChange = (e: any) => {
     const { name, value, type, checked } = e.target;
@@ -38,10 +46,47 @@ export default function CreateEvent() {
     });
   };
 
-  const handleSubmit = (e: any) => {
+  const handleSubmit = async (e: any) => {
     e.preventDefault();
-    console.log("Event Created:", form);
-    alert("Event Created Successfully 🚀");
+    setLoading(true);
+    setError("");
+
+    if (!form.title || !form.description) {
+      setError("Please fill in title and description");
+      setLoading(false);
+      return;
+    }
+
+    try {
+      const res = await fetchWithAuth("http://localhost:8000/create-event", {
+        method: "POST",
+        body: JSON.stringify({
+          title: form.title,
+          description: form.description,
+        }),
+      });
+
+      if (res.ok) {
+        alert("Event Created Successfully 🚀");
+        setForm({
+          title: "",
+          description: "",
+          date: "",
+          time: "",
+          meetingLink: "",
+          whatsapp: true,
+          meeting: true,
+          certificate: false,
+        });
+      } else {
+        const errorData = await res.json();
+        setError(errorData.detail || "Failed to create event");
+      }
+    } catch (err: any) {
+      setError(err.message || "An error occurred");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -141,6 +186,12 @@ export default function CreateEvent() {
               <div className="lg:col-span-2">
                 <form onSubmit={handleSubmit} className="bg-white rounded-3xl p-8 md:p-10 shadow-sm border border-gray-100">
                   
+                  {error && (
+                    <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg">
+                      <p className="text-sm text-red-700">{error}</p>
+                    </div>
+                  )}
+
                   {/* Title */}
                   <div className="mb-8">
                     <label className="block text-xs font-bold text-gray-900 tracking-widest uppercase mb-3">Title</label>
@@ -297,9 +348,10 @@ export default function CreateEvent() {
                   {/* Submit */}
                   <button
                     type="submit"
-                    className="w-full bg-[#7c3aed] text-white py-4 rounded-xl font-medium text-lg hover:bg-[#6d28d9] transition-colors shadow-lg shadow-purple-500/20"
+                    disabled={loading}
+                    className="w-full bg-[#7c3aed] text-white py-4 rounded-xl font-medium text-lg hover:bg-[#6d28d9] transition-colors shadow-lg shadow-purple-500/20 disabled:bg-gray-400 disabled:cursor-not-allowed"
                   >
-                    Create Event
+                    {loading ? "Creating Event..." : "Create Event"}
                   </button>
 
                 </form>

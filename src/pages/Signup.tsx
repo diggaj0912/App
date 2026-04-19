@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Sparkles, Users, Eye, EyeOff } from "lucide-react";
+import { createUserWithEmailAndPassword } from "firebase/auth";
+import { auth } from "../firebase";
 
 export default function Signup() {
   const navigate = useNavigate();
@@ -10,19 +12,54 @@ export default function Signup() {
     email: "",
     password: "",
   });
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const handleChange = (e: any) => {
     setForm({
       ...form,
       [e.target.name]: e.target.value,
     });
+    setError("");
   };
 
-  const handleSubmit = (e: any) => {
+  const handleSubmit = async (e: any) => {
     e.preventDefault();
+    setLoading(true);
+    setError("");
+    
     if (form.email && form.password && form.fullName) {
-      navigate("/community");
+      try {
+        const userCredential = await createUserWithEmailAndPassword(auth, form.email, form.password);
+        
+        // Get ID token
+        const token = await userCredential.user.getIdToken();
+        localStorage.setItem("authToken", token);
+        
+        // Save user to backend
+        try {
+          await fetch("http://localhost:8000/save-user", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              "Authorization": token,
+            },
+            body: JSON.stringify({
+              name: form.fullName,
+            }),
+          });
+        } catch (backendErr) {
+          console.warn("Backend user save failed (non-critical):", backendErr);
+        }
+        
+        navigate("/dashboard");
+      } catch (err: any) {
+        setError(err.message);
+      }
+    } else {
+      setError("Please fill in all fields");
     }
+    setLoading(false);
   };
 
   return (
@@ -84,6 +121,12 @@ export default function Signup() {
               <h2 className="text-3xl font-bold text-gray-900 mb-2">Create your account</h2>
               <p className="text-gray-600">Start building your community today.</p>
             </div>
+
+            {error && (
+              <div className="mb-5 p-4 bg-red-50 border border-red-200 rounded-lg">
+                <p className="text-sm text-red-700">{error}</p>
+              </div>
+            )}
 
             <div className="space-y-4 mb-8">
               <button className="w-full flex items-center justify-center gap-3 bg-white border border-gray-200 rounded-xl py-3 text-sm font-bold text-gray-700 hover:bg-gray-50 transition-colors shadow-sm">
@@ -167,9 +210,10 @@ export default function Signup() {
 
               <button
                 type="submit"
-                className="w-full bg-[#5a67d8] text-white py-3.5 rounded-xl font-bold text-sm hover:bg-[#4c51bf] transition-all shadow-lg shadow-indigo-500/30 mt-8"
+                disabled={loading}
+                className="w-full bg-[#5a67d8] text-white py-3.5 rounded-xl font-bold text-sm hover:bg-[#4c51bf] transition-all shadow-lg shadow-indigo-500/30 mt-8 disabled:bg-gray-400 disabled:cursor-not-allowed"
               >
-                Create account
+                {loading ? "Creating account..." : "Create account"}
               </button>
             </form>
 

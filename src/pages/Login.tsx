@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { ArrowRight, Mail, Lock, Github } from "lucide-react";
+import { signInWithEmailAndPassword } from "firebase/auth";
+import { auth } from "../firebase";
 
 export default function Login() {
   const navigate = useNavigate();
@@ -8,19 +10,54 @@ export default function Login() {
     email: "",
     password: "",
   });
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const handleChange = (e: any) => {
     setForm({
       ...form,
       [e.target.name]: e.target.value,
     });
+    setError("");
   };
 
-  const handleSubmit = (e: any) => {
+  const handleSubmit = async (e: any) => {
     e.preventDefault();
+    setLoading(true);
+    setError("");
+    
     if (form.email && form.password) {
-      navigate("/community");
+      try {
+        const userCredential = await signInWithEmailAndPassword(auth, form.email, form.password);
+        
+        // Get ID token
+        const token = await userCredential.user.getIdToken();
+        localStorage.setItem("authToken", token);
+        
+        // Save user to backend (optional)
+        try {
+          await fetch("http://localhost:8000/save-user", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              "Authorization": token,
+            },
+            body: JSON.stringify({
+              name: userCredential.user.email || "User",
+            }),
+          });
+        } catch (backendErr) {
+          console.warn("Backend user save failed (non-critical):", backendErr);
+        }
+        
+        navigate("/dashboard");
+      } catch (err: any) {
+        setError(err.message);
+      }
+    } else {
+      setError("Please fill in all fields");
     }
+    setLoading(false);
   };
 
   return (
@@ -85,6 +122,12 @@ export default function Login() {
             <p className="text-gray-500">Please enter your details to sign in.</p>
           </div>
 
+          {error && (
+            <div className="mb-5 p-4 bg-red-50 border border-red-200 rounded-lg">
+              <p className="text-sm text-red-700">{error}</p>
+            </div>
+          )}
+
           <form onSubmit={handleSubmit} className="space-y-5">
             
             <div className="space-y-2">
@@ -142,9 +185,10 @@ export default function Login() {
 
             <button
               type="submit"
-              className="w-full bg-[#7c3aed] text-white py-3.5 rounded-xl font-bold text-sm hover:bg-[#6d28d9] transition-all shadow-lg shadow-purple-500/30 flex items-center justify-center gap-2 mt-6"
+              disabled={loading}
+              className="w-full bg-[#7c3aed] text-white py-3.5 rounded-xl font-bold text-sm hover:bg-[#6d28d9] transition-all shadow-lg shadow-purple-500/30 flex items-center justify-center gap-2 mt-6 disabled:bg-gray-400 disabled:cursor-not-allowed"
             >
-              Sign In <ArrowRight className="w-4 h-4" />
+              {loading ? "Signing In..." : "Sign In"} {!loading && <ArrowRight className="w-4 h-4" />}
             </button>
           </form>
 

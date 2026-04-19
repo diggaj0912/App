@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
 import {
   Search,
   Bell,
@@ -19,6 +19,10 @@ import {
 } from "lucide-react";
 
 export default function Dashboard() {
+  const user = localStorage.getItem("user");
+  if (!user) {
+    return <Navigate to="/login" />;
+  }
   return (
     <div className="flex h-screen bg-[#f8f9fa] font-sans text-gray-900 overflow-hidden">
       {/* Sidebar */}
