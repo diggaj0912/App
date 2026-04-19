@@ -1,17 +1,83 @@
-import { Link } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { Link, useNavigate, Navigate } from "react-router-dom";
 import {
   Search, Bell, Settings, Image as ImageIcon, Paperclip, Calendar as CalendarIcon,
   Heart, MessageSquare, Share, Bookmark, Users, HelpCircle,
-  Award, Folder, Plus, ArrowRight
+  Award, Folder, Plus, ArrowRight, LogOut, User, Send
 } from "lucide-react";
+import { auth } from "../firebase";
+import { signOut } from "firebase/auth";
+import { socket } from "../App";
 
 export default function Community() {
+  const navigate = useNavigate();
+  const rawUser = localStorage.getItem("user");
+  let user: any = null;
+  if(rawUser) {
+    try {
+      user = JSON.parse(rawUser);
+    } catch(e) {
+      user = { email: rawUser, name: rawUser.split('@')[0] };
+    }
+  }
+
+  const [messages, setMessages] = useState<any[]>([]);
+  const [msgInput, setMsgInput] = useState("");
+  const communityId = "global-collective-123";
+
+  useEffect(() => {
+    if(!user) return;
+    fetch(`/messages/${communityId}`)
+      .then(res => res.json())
+      .then(data => {
+        if (Array.isArray(data)) setMessages(data);
+      })
+      .catch(e => console.error("Could not load messages:", e));
+
+    socket.on("new-message", (msg) => {
+      setMessages(prev => [...prev, msg]);
+    });
+
+    return () => {
+      socket.off("new-message");
+    };
+  }, [user]);
+
+  const sendMessage = async () => {
+    if(!msgInput.trim()) return;
+    const text = msgInput;
+    setMsgInput("");
+    await fetch("/send-message", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        communityId,
+        user: user.email || user.name,
+        text,
+      }),
+    });
+  };
+
+  if (!user) {
+    return <Navigate to="/login" />;
+  }
+
+  const handleLogout = async () => {
+    try {
+      await signOut(auth);
+      localStorage.removeItem("user");
+      navigate("/login");
+    } catch (error) {
+      console.error("Error logging out:", error);
+    }
+  };
+
   return (
     <div className="flex flex-col h-screen bg-[#f8f9fa] font-sans text-gray-900 overflow-hidden">
       {/* Top Navigation */}
       <header className="h-16 bg-white border-b border-gray-100 flex items-center justify-between px-6 shrink-0 z-20">
         <div className="flex items-center gap-12">
-          <span className="text-xl font-bold tracking-tight">Curator Hub</span>
+          <span className="text-xl font-bold tracking-tight">UptoHack Hub</span>
           <nav className="hidden md:flex items-center gap-8">
             <Link to="/community" className="text-[#7c3aed] font-semibold text-sm border-b-2 border-[#7c3aed] py-5">
               Explore
@@ -35,15 +101,15 @@ export default function Community() {
             />
           </div>
           <div className="flex items-center gap-4">
-            <button className="text-gray-400 hover:text-gray-600 transition-colors">
+            <button onClick={() => alert("No new notifications")} className="text-gray-400 hover:text-gray-600 transition-colors">
               <Bell className="w-5 h-5" />
             </button>
-            <button className="text-gray-400 hover:text-gray-600 transition-colors">
+            <button onClick={() => alert("Settings opened")} className="text-gray-400 hover:text-gray-600 transition-colors">
               <Settings className="w-5 h-5" />
             </button>
-            <div className="w-8 h-8 rounded-full bg-indigo-100 border-2 border-[#7c3aed] overflow-hidden">
+            <Link to="/profile" className="w-8 h-8 rounded-full bg-indigo-100 border-2 border-[#7c3aed] overflow-hidden">
               <img src="https://i.pravatar.cc/150?img=32" alt="Profile" className="w-full h-full object-cover" />
-            </div>
+            </Link>
           </div>
         </div>
       </header>
@@ -80,16 +146,25 @@ export default function Community() {
               <Link to="/resources" className="flex items-center gap-3 px-4 py-3 text-gray-600 hover:bg-white hover:shadow-sm rounded-xl transition-all font-medium text-sm">
                 <Folder className="w-5 h-5" /> Resources
               </Link>
+              <Link to="/profile" className="flex items-center gap-3 px-4 py-3 text-gray-600 hover:bg-white hover:shadow-sm rounded-xl transition-all font-medium text-sm">
+                <User className="w-5 h-5" /> Profile
+              </Link>
             </nav>
 
-            <button className="w-full bg-[#7c3aed] text-white py-3 rounded-xl font-medium text-sm hover:bg-[#6d28d9] transition-colors shadow-md shadow-purple-500/20">
+            <Link to="/create-post" className="w-full bg-[#7c3aed] text-white py-3 rounded-xl font-medium text-sm hover:bg-[#6d28d9] transition-colors shadow-md shadow-purple-500/20 text-center block">
               Create Post
-            </button>
+            </Link>
           </div>
 
           <div className="p-6">
-            <button className="flex items-center gap-3 text-gray-500 hover:text-gray-900 transition-colors text-sm font-medium">
+            <Link to="/help-center" className="flex items-center gap-3 text-gray-500 hover:text-gray-900 transition-colors text-sm font-medium mb-4">
               <HelpCircle className="w-5 h-5" /> Help Center
+            </Link>
+            <button 
+              onClick={handleLogout}
+              className="flex items-center gap-3 text-red-500 hover:text-red-600 transition-colors text-sm font-medium w-full text-left"
+            >
+              <LogOut className="w-5 h-5" /> Logout
             </button>
           </div>
         </aside>
@@ -100,6 +175,43 @@ export default function Community() {
             
             {/* Feed Column */}
             <div className="flex-1 space-y-6">
+
+              {/* Live Chat Component */}
+              <div className="bg-white rounded-3xl p-6 shadow-sm border border-gray-100 flex flex-col h-[400px]">
+                <h3 className="text-lg font-bold text-gray-900 border-b pb-4 mb-4 flex items-center gap-2">
+                  <div className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></div>
+                  Live Lounge Chat
+                </h3>
+                
+                <div className="flex-1 overflow-y-auto space-y-4 mb-4 pr-2">
+                  {messages.length === 0 ? (
+                    <div className="text-sm text-gray-400 text-center mt-10">No messages yet. Say hi!</div>
+                  ) : (
+                    messages.map((m, i) => (
+                      <div key={i} className={`flex flex-col ${m.user === (user.email || user.name) ? "items-end" : "items-start"}`}>
+                        <span className="text-[10px] text-gray-400 mb-1">{m.user?.split('@')[0]}</span>
+                        <div className={`px-4 py-2 rounded-2xl max-w-[80%] text-sm ${m.user === (user.email || user.name) ? "bg-[#7c3aed] text-white" : "bg-gray-100 text-gray-900"}`}>
+                          {m.text}
+                        </div>
+                      </div>
+                    ))
+                  )}
+                </div>
+
+                <div className="relative flex items-center">
+                  <input 
+                    type="text" 
+                    value={msgInput}
+                    onChange={(e) => setMsgInput(e.target.value)}
+                    onKeyDown={(e) => e.key === "Enter" && sendMessage()}
+                    placeholder="Type in live lounge..." 
+                    className="w-full bg-[#f8f9fa] border border-gray-200 outline-none focus:border-[#7c3aed] focus:ring-2 focus:ring-purple-100 rounded-full py-3 px-5 pr-12 text-sm transition-all"
+                  />
+                  <button onClick={sendMessage} className="absolute right-2 p-2 bg-[#7c3aed] text-white rounded-full hover:bg-[#6d28d9] transition-colors shadow-lg">
+                    <Send className="w-4 h-4" />
+                  </button>
+                </div>
+              </div>
               
               {/* Create Post Input */}
               <div className="bg-white rounded-3xl p-6 shadow-sm border border-gray-100">
@@ -111,11 +223,11 @@ export default function Community() {
                     </div>
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-2">
-                        <button className="p-2 text-gray-500 hover:text-gray-900 hover:bg-gray-50 rounded-lg transition-colors"><ImageIcon className="w-5 h-5" /></button>
-                        <button className="p-2 text-gray-500 hover:text-gray-900 hover:bg-gray-50 rounded-lg transition-colors"><Paperclip className="w-5 h-5" /></button>
-                        <button className="p-2 text-gray-500 hover:text-gray-900 hover:bg-gray-50 rounded-lg transition-colors"><CalendarIcon className="w-5 h-5" /></button>
+                        <button onClick={() => alert("Upload Image")} className="p-2 text-gray-500 hover:text-gray-900 hover:bg-gray-50 rounded-lg transition-colors"><ImageIcon className="w-5 h-5" /></button>
+                        <button onClick={() => alert("Add Attachment")} className="p-2 text-gray-500 hover:text-gray-900 hover:bg-gray-50 rounded-lg transition-colors"><Paperclip className="w-5 h-5" /></button>
+                        <button onClick={() => alert("Schedule Post")} className="p-2 text-gray-500 hover:text-gray-900 hover:bg-gray-50 rounded-lg transition-colors"><CalendarIcon className="w-5 h-5" /></button>
                       </div>
-                      <button className="bg-[#7c3aed] text-white px-6 py-2 rounded-full text-sm font-medium hover:bg-[#6d28d9] transition-colors">
+                      <button onClick={() => alert("Post Published!")} className="bg-[#7c3aed] text-white px-6 py-2 rounded-full text-sm font-medium hover:bg-[#6d28d9] transition-colors">
                         Post
                       </button>
                     </div>
@@ -131,7 +243,7 @@ export default function Community() {
                     <div>
                       <h4 className="font-bold text-gray-900 text-sm">Marcus Sterling</h4>
                       <div className="flex items-center gap-2 text-xs text-gray-500">
-                        <span>Curator • 2h ago</span>
+                        <span>UptoHack • 2h ago</span>
                         <span className="bg-[#d4ed31] text-gray-900 text-[8px] font-bold px-1.5 py-0.5 rounded uppercase tracking-wider">Member</span>
                       </div>
                     </div>
@@ -151,20 +263,20 @@ export default function Community() {
 
                 <div className="flex items-center justify-between pt-2">
                   <div className="flex items-center gap-6">
-                    <button className="flex items-center gap-2 text-gray-500 hover:text-gray-900 transition-colors">
+                    <button onClick={() => alert("Liked!")} className="flex items-center gap-2 text-gray-500 hover:text-gray-900 transition-colors">
                       <Heart className="w-4 h-4 fill-current text-gray-700" />
                       <span className="text-sm font-medium">124</span>
                     </button>
-                    <button className="flex items-center gap-2 text-gray-500 hover:text-gray-900 transition-colors">
+                    <button onClick={() => alert("Comments opened")} className="flex items-center gap-2 text-gray-500 hover:text-gray-900 transition-colors">
                       <MessageSquare className="w-4 h-4 fill-current text-gray-700" />
                       <span className="text-sm font-medium">18</span>
                     </button>
-                    <button className="flex items-center gap-2 text-gray-500 hover:text-gray-900 transition-colors">
+                    <button onClick={() => alert("Share dialog opened")} className="flex items-center gap-2 text-gray-500 hover:text-gray-900 transition-colors">
                       <Share className="w-4 h-4" />
                       <span className="text-sm font-medium">Share</span>
                     </button>
                   </div>
-                  <button className="text-gray-400 hover:text-gray-900 transition-colors">
+                  <button onClick={() => alert("Bookmarked!")} className="text-gray-400 hover:text-gray-900 transition-colors">
                     <Bookmark className="w-5 h-5 fill-current text-gray-700" />
                   </button>
                 </div>
@@ -190,7 +302,7 @@ export default function Community() {
                 </div>
 
                 <p className="text-gray-800 text-sm leading-relaxed mb-4">
-                  Our weekly community sync is starting now in the "Main Lounge" voice channel. Join us for a first look at the Q3 Roadmap and the new Curator Tools.
+                  Our weekly community sync is starting now in the "Main Lounge" voice channel. Join us for a first look at the Q3 Roadmap and the new UptoHack Tools.
                 </p>
 
                 <div className="bg-[#f8f9fa] rounded-2xl p-4 flex items-center justify-between mb-4 border border-gray-100">
@@ -202,17 +314,17 @@ export default function Community() {
                     </div>
                     <span className="text-sm text-gray-600">Members are already in the lounge</span>
                   </div>
-                  <button className="bg-purple-100 text-[#7c3aed] px-4 py-2 rounded-lg text-xs font-bold tracking-wider hover:bg-purple-200 transition-colors">
+                  <a href="https://meet.google.com" target="_blank" rel="noopener noreferrer" className="bg-purple-100 text-[#7c3aed] px-4 py-2 rounded-lg text-xs font-bold tracking-wider hover:bg-purple-200 transition-colors inline-block text-center">
                     JOIN SESSION
-                  </button>
+                  </a>
                 </div>
 
                 <div className="flex items-center gap-6 pt-2">
-                  <button className="flex items-center gap-2 text-gray-500 hover:text-gray-900 transition-colors">
+                  <button onClick={() => alert("Liked!")} className="flex items-center gap-2 text-gray-500 hover:text-gray-900 transition-colors">
                     <Heart className="w-4 h-4 fill-current text-gray-700" />
                     <span className="text-sm font-medium">56</span>
                   </button>
-                  <button className="flex items-center gap-2 text-gray-500 hover:text-gray-900 transition-colors">
+                  <button onClick={() => alert("Comments opened")} className="flex items-center gap-2 text-gray-500 hover:text-gray-900 transition-colors">
                     <MessageSquare className="w-4 h-4 fill-current text-gray-700" />
                     <span className="text-sm font-medium">12</span>
                   </button>
@@ -252,9 +364,9 @@ export default function Community() {
                   </div>
                 </div>
 
-                <button className="w-full mt-6 bg-[#7c3aed] text-white py-3 rounded-xl text-xs font-bold tracking-widest uppercase flex items-center justify-center gap-2 hover:bg-[#6d28d9] transition-colors">
+                <Link to="/resources" className="w-full mt-6 bg-[#7c3aed] text-white py-3 rounded-xl text-xs font-bold tracking-widest uppercase flex items-center justify-center gap-2 hover:bg-[#6d28d9] transition-colors">
                   View All Resources <ArrowRight className="w-4 h-4" />
-                </button>
+                </Link>
               </div>
 
               {/* Active Members */}
@@ -279,20 +391,20 @@ export default function Community() {
                     +12
                   </div>
                 </div>
-                <button className="w-full py-2.5 rounded-xl border border-purple-200 text-[#7c3aed] text-xs font-bold tracking-widest uppercase hover:bg-purple-50 transition-colors">
+                <Link to="/network" className="w-full py-2.5 rounded-xl border border-purple-200 text-[#7c3aed] text-xs font-bold tracking-widest uppercase hover:bg-purple-50 transition-colors block text-center mt-6">
                   See Full Network
-                </button>
+                </Link>
               </div>
 
               {/* Footer Links */}
-              <div className="flex flex-col gap-4 px-2 pt-4">
+              <div className="flex flex-col gap-4 px-2 pt-4 mb-8">
                 <div className="flex items-center gap-4 text-xs font-medium text-gray-400">
-                  <a href="#" className="hover:text-gray-600">PRIVACY</a>
-                  <a href="#" className="hover:text-gray-600">TERMS</a>
-                  <a href="#" className="hover:text-gray-600">COOKIES</a>
+                  <Link to="/privacy-policy" className="hover:text-gray-600">PRIVACY</Link>
+                  <Link to="/terms" className="hover:text-gray-600">TERMS</Link>
+                  <Link to="/cookies" className="hover:text-gray-600">COOKIES</Link>
                 </div>
                 <p className="text-[10px] text-gray-400 uppercase tracking-wider">
-                  © 2024 CURATOR HUB
+                  © 2024 UPTOHACK HUB
                 </p>
               </div>
 

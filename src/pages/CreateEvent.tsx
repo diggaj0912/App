@@ -15,7 +15,11 @@ import {
   MessageCircle,
   Video,
   FileCheck,
-  ArrowRight
+  ArrowRight,
+  MapPin,
+  Mic,
+  FileUp,
+  Users as UsersIcon
 } from "lucide-react";
 import { fetchWithAuth } from "../utils/api";
 
@@ -25,15 +29,26 @@ export default function CreateEvent() {
     return <Navigate to="/login" />;
   }
 
+  const handleLogout = () => {
+    localStorage.removeItem("user");
+    localStorage.removeItem("authToken");
+    window.location.href = "/login";
+  };
   const [form, setForm] = useState({
     title: "",
     description: "",
     date: "",
     time: "",
+    type: "event", // 'event' or 'hackathon'
     meetingLink: "",
+    venue: "",
+    speakers: "",
+    hasPptUpload: false,
+    hasTeamFormation: false,
     whatsapp: true,
     meeting: true,
     certificate: false,
+    sponsorship: false,
   });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
@@ -97,7 +112,7 @@ export default function CreateEvent() {
           {/* Nav Menu */}
           <div className="px-6 mt-8">
             <div className="mb-8">
-              <div className="text-[10px] font-bold text-gray-500 tracking-widest uppercase">Curator Pro</div>
+              <div className="text-[10px] font-bold text-gray-500 tracking-widest uppercase">UptoHack Pro</div>
               <div className="text-sm font-bold text-gray-900 mt-1">Elite Management</div>
             </div>
 
@@ -127,10 +142,10 @@ export default function CreateEvent() {
             <HelpCircle className="w-5 h-5" />
             Help
           </button>
-          <Link to="/login" className="w-full flex items-center gap-3 px-4 py-3 text-gray-600 hover:bg-gray-50 rounded-xl transition-colors font-medium text-sm">
+          <button onClick={handleLogout} className="w-full flex items-center gap-3 px-4 py-3 text-red-500 hover:bg-red-50 rounded-xl transition-colors font-medium text-sm">
             <LogOut className="w-5 h-5" />
             Logout
-          </Link>
+          </button>
         </div>
       </aside>
 
@@ -139,7 +154,7 @@ export default function CreateEvent() {
         {/* Topbar */}
         <header className="h-20 bg-white border-b border-gray-100 flex items-center justify-between px-8 shrink-0">
           <div className="flex items-center gap-8">
-            <span className="text-xl font-bold tracking-tight">Curator</span>
+            <span className="text-xl font-bold tracking-tight">UptoHack</span>
             <div className="hidden md:flex gap-6">
               <Link to="/community" className="text-gray-500 hover:text-gray-900 text-sm transition-all duration-300">
                 Communities
@@ -176,7 +191,7 @@ export default function CreateEvent() {
                 Create Event
               </h1>
               <p className="text-gray-600 text-lg max-w-2xl leading-relaxed">
-                Design an experience that matters. Fill in the details below to broadcast your event to the Curator Pro community.
+                Design an experience that matters. Fill in the details below to broadcast your event to the UptoHack Pro community.
               </p>
             </div>
 
@@ -262,23 +277,73 @@ export default function CreateEvent() {
                     </div>
                   </div>
 
-                  {/* Meeting Link */}
-                  <div className="mb-10">
-                    <label className="block text-xs font-bold text-gray-900 tracking-widest uppercase mb-3">Meeting Link</label>
-                    <div className="relative">
-                      <div className="absolute inset-y-0 left-0 pl-5 flex items-center pointer-events-none">
-                        <LinkIcon className="w-5 h-5 text-gray-400" />
-                      </div>
-                      <input
-                        type="url"
-                        name="meetingLink"
-                        value={form.meetingLink}
-                        onChange={handleChange}
-                        className="w-full bg-[#f8f9fa] border-none rounded-xl pl-12 pr-5 py-4 text-gray-900 placeholder:text-gray-400 focus:ring-2 focus:ring-[#7c3aed] outline-none transition-all"
-                        placeholder="https://zoom.us/j/..."
-                      />
-                    </div>
+                  {/* Meeting Link & Venue */}
+                  <div className="mb-8">
+                     <label className="block text-xs font-bold text-gray-900 tracking-widest uppercase mb-3">Location / Venue</label>
+                     <div className="relative mb-6">
+                        <div className="absolute inset-y-0 left-0 pl-5 flex items-center pointer-events-none">
+                          <MapPin className="w-5 h-5 text-gray-400" />
+                        </div>
+                        <input type="text" name="venue" value={form.venue} onChange={handleChange} className="w-full bg-[#f8f9fa] border-none rounded-xl pl-12 pr-5 py-4 text-gray-900 placeholder:text-gray-400 focus:ring-2 focus:ring-[#7c3aed] outline-none" placeholder="Physical Venue or Virtual" />
+                     </div>
+                     <label className="block text-xs font-bold text-gray-900 tracking-widest uppercase mb-3">Meeting Link</label>
+                     <div className="flex gap-4">
+                        <div className="relative flex-1">
+                          <div className="absolute inset-y-0 left-0 pl-5 flex items-center pointer-events-none">
+                            <LinkIcon className="w-5 h-5 text-gray-400" />
+                          </div>
+                          <input type="url" name="meetingLink" value={form.meetingLink} onChange={handleChange} className="w-full bg-[#f8f9fa] border-none rounded-xl pl-12 pr-5 py-4 text-gray-900 placeholder:text-gray-400 focus:ring-2 focus:ring-[#7c3aed] outline-none" placeholder="https://..." />
+                        </div>
+                        <button type="button" onClick={generateMeetingLink} className="bg-indigo-50 text-[#7c3aed] px-6 font-bold rounded-xl whitespace-nowrap border border-indigo-100 hover:bg-indigo-100 transition-colors">
+                           Auto-Generate
+                        </button>
+                     </div>
                   </div>
+
+                  {/* Speakers Profiles */}
+                  <div className="mb-10">
+                     <label className="block text-xs font-bold text-gray-900 tracking-widest uppercase mb-3">Speaker Profiles</label>
+                     <div className="relative">
+                        <div className="absolute inset-y-0 left-0 pl-5 flex items-center pointer-events-none">
+                          <Mic className="w-5 h-5 text-gray-400" />
+                        </div>
+                        <input type="text" name="speakers" value={form.speakers} onChange={handleChange} className="w-full bg-[#f8f9fa] border-none rounded-xl pl-12 pr-5 py-4 text-gray-900 placeholder:text-gray-400 focus:ring-2 focus:ring-[#7c3aed] outline-none" placeholder="Comma separated, e.g. Sarah Jenkins, Marc Andreessen" />
+                     </div>
+                  </div>
+
+                  {/* Hackathon Features */}
+                  {form.type === 'hackathon' && (
+                    <div className="p-6 bg-blue-50/50 rounded-2xl border border-blue-100 mb-10 space-y-6">
+                      <div className="flex items-center justify-between">
+                        <div className="flex gap-4">
+                          <div className="w-12 h-12 rounded-2xl bg-white border border-blue-100 flex items-center justify-center shrink-0">
+                            <FileUp className="w-6 h-6 text-blue-500" />
+                          </div>
+                          <div>
+                            <h4 className="font-bold text-gray-900">PPT & Resource Upload Support</h4>
+                            <p className="text-xs text-gray-500 mt-1">Allow members to upload hackathon deliverables.</p>
+                          </div>
+                        </div>
+                        <button type="button" onClick={() => setForm({...form, hasPptUpload: !form.hasPptUpload})} className={`w-14 h-8 rounded-full transition-colors relative ${form.hasPptUpload ? 'bg-blue-600' : 'bg-gray-200'}`}>
+                          <div className={`w-6 h-6 bg-white rounded-full absolute top-1 transition-transform ${form.hasPptUpload ? 'translate-x-7' : 'translate-x-1'}`}></div>
+                        </button>
+                      </div>
+                      <div className="flex items-center justify-between">
+                        <div className="flex gap-4">
+                          <div className="w-12 h-12 rounded-2xl bg-white border border-blue-100 flex items-center justify-center shrink-0">
+                            <UsersIcon className="w-6 h-6 text-blue-500" />
+                          </div>
+                          <div>
+                            <h4 className="font-bold text-gray-900">Team Formation</h4>
+                            <p className="text-xs text-gray-500 mt-1">Allow users to form max 4-member teams.</p>
+                          </div>
+                        </div>
+                        <button type="button" onClick={() => setForm({...form, hasTeamFormation: !form.hasTeamFormation})} className={`w-14 h-8 rounded-full transition-colors relative ${form.hasTeamFormation ? 'bg-blue-600' : 'bg-gray-200'}`}>
+                          <div className={`w-6 h-6 bg-white rounded-full absolute top-1 transition-transform ${form.hasTeamFormation ? 'translate-x-7' : 'translate-x-1'}`}></div>
+                        </button>
+                      </div>
+                    </div>
+                  )}
 
                   {/* Toggles */}
                   <div className="space-y-6 mb-10">
@@ -340,6 +405,26 @@ export default function CreateEvent() {
                         className={`w-14 h-8 rounded-full transition-colors relative ${form.certificate ? 'bg-[#7c3aed]' : 'bg-gray-200'}`}
                       >
                         <div className={`w-6 h-6 bg-white rounded-full absolute top-1 transition-transform ${form.certificate ? 'translate-x-7' : 'translate-x-1'}`}></div>
+                      </button>
+                    </div>
+
+                    {/* Sponsorship Toggle */}
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-4">
+                        <div className="w-12 h-12 rounded-2xl bg-orange-50 flex items-center justify-center shrink-0">
+                          <Users className="w-6 h-6 text-orange-600" />
+                        </div>
+                        <div>
+                          <h4 className="font-bold text-gray-900 text-sm">Seek Sponsorships</h4>
+                          <p className="text-xs text-gray-500 mt-0.5">List this event in the UptoHack Sponsor directory</p>
+                        </div>
+                      </div>
+                      <button 
+                        type="button"
+                        onClick={() => setForm({...form, sponsorship: !form.sponsorship})}
+                        className={`w-14 h-8 rounded-full transition-colors relative ${form.sponsorship ? 'bg-[#7c3aed]' : 'bg-gray-200'}`}
+                      >
+                        <div className={`w-6 h-6 bg-white rounded-full absolute top-1 transition-transform ${form.sponsorship ? 'translate-x-7' : 'translate-x-1'}`}></div>
                       </button>
                     </div>
 

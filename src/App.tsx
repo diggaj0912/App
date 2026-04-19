@@ -54,7 +54,6 @@ function App() {
   }, []);
 
   if (loading) return <div>Loading...</div>;
-
   return (
     <Routes>
       <Route path="/" element={<Home />} />
@@ -119,67 +118,6 @@ function App() {
         element={
           <ProtectedRoute>
             <Analytics />
-          </ProtectedRoute>
-        }
-      />
-      <Route path="/login" element={<Login />} />
-      <Route path="/signup" element={<Signup />} />
-    </Routes>
-  );
-}
-
-export default App;
-
-  if (loading) return <div>Loading...</div>;
-
-  return (
-    <Routes>
-      <Route path="/" element={<Home />} />
-      <Route
-        path="/dashboard"
-        element={
-          <ProtectedRoute>
-            <Dashboard />
-          </ProtectedRoute>
-        }
-      />
-      <Route
-        path="/event"
-        element={
-          <ProtectedRoute>
-            <Event />
-          </ProtectedRoute>
-        }
-      />
-      <Route
-        path="/community"
-        element={
-          <ProtectedRoute>
-            <Community />
-          </ProtectedRoute>
-        }
-      />
-      <Route
-        path="/create-event"
-        element={
-          <ProtectedRoute>
-            <CreateEvent />
-          </ProtectedRoute>
-        }
-      />
-      <Route
-        path="/certificates"
-        element={
-          <ProtectedRoute>
-            <Certificates />
-          </ProtectedRoute>
-        }
-      />
-      <Route
-        path="/feed"
-        element={
-          <ProtectedRoute>
-            <Feed />
           </ProtectedRoute>
         }
       />

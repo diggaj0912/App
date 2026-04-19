@@ -1,3 +1,4 @@
+import { useState, useEffect } from 'react';
 import { motion } from 'motion/react';
 import {
   Search,
@@ -12,38 +13,49 @@ import {
 import { Link } from 'react-router-dom';
 
 export default function Event() {
+  const [events, setEvents] = useState<any[]>([]);
+
+  useEffect(() => {
+    const fetchEvents = async () => {
+      try {
+        const rawUser = localStorage.getItem("user");
+        let email = "";
+        if (rawUser) {
+          try {
+            const parsed = JSON.parse(rawUser);
+            email = parsed.email || "";
+          } catch (e) {
+            email = rawUser;
+          }
+        }
+        
+        if (email) {
+          const res = await fetch(`/events/${encodeURIComponent(email)}`);
+          if (res.ok) {
+            const data = await res.json();
+            setEvents(data);
+          } else {
+            console.error("Failed to fetch events, status:", res.status);
+          }
+        }
+      } catch (err) {
+        console.error("Failed to fetch events:", err);
+      }
+    };
+    
+    fetchEvents();
+  }, []);
+
   return (
     <div className="min-h-screen bg-[#f8f9fa] pb-24 font-sans text-gray-900">
       {/* Navbar */}
       <nav className="bg-white px-6 h-16 flex items-center justify-between sticky top-0 z-50 border-b border-gray-100">
         <div className="flex items-center gap-8">
           <Link to="/" className="text-xl font-bold tracking-tight">
-            Curator
+            UptoHack
           </Link>
-          <div className="hidden md:flex gap-6">
-            <Link to="/community" className="text-sm text-gray-500 hover:text-gray-900 transition-colors">
-              Communities
-            </Link>
-            <Link to="/event" className="text-sm text-purple-600 font-medium transition-colors">
-              Events
-            </Link>
-            <Link to="#" className="text-sm text-gray-500 hover:text-gray-900 transition-colors">
-              Certificates
-            </Link>
-          </div>
         </div>
         <div className="flex items-center gap-4">
-          <div className="hidden md:flex items-center bg-gray-100 px-3 py-1.5 rounded-full">
-            <Search className="w-4 h-4 text-gray-400 mr-2" />
-            <input
-              type="text"
-              placeholder="Search events..."
-              className="bg-transparent border-none focus:outline-none text-sm text-gray-700 w-48 placeholder:text-gray-400"
-            />
-          </div>
-          <button onClick={() => alert("Notifications")} className="p-2 text-gray-500 hover:bg-gray-100 rounded-full transition-all">
-            <Bell className="w-5 h-5" />
-          </button>
           <Link to="/login" className="w-8 h-8 rounded-full bg-gray-200 overflow-hidden border border-gray-200 hover:ring-2 hover:ring-indigo-500 transition-all">
             <img
               src="https://lh3.googleusercontent.com/aida-public/AB6AXuA8lsF7EjahYQvzMul7Z0r2GeyQlpvZCf_SR0R8foON7kwsJ8aoAFX45_94TM2TJrADixtJ18B419bxaDIu9C_4mMh8ugDCgXjqXpZQCDsRDZ3JnCBahEvuEzaGTZ7ckPYZfePRYbZ1IWadAzmtycVkuKblaW6F9YdMYAKzAeOjJz_OPYIqeuzcNKrc3a_UkSOu4BH9YJPcW1DH_F3NI6NHW00gUKR8zobwV4_ujqHOytWIa67JG2YTIK6fxWc4L19xZ63OiJCh131o"
@@ -94,7 +106,7 @@ export default function Event() {
             <h2 className="text-3xl font-bold text-gray-900 mb-6">About this Event</h2>
             <div className="text-gray-600 leading-relaxed space-y-4 text-lg">
               <p>
-                Dive deep into the evolving landscape of digital product design. This workshop isn't just about pixels; it's about systems, psychology, and the emerging "Digital Curator" aesthetic. Join us for a full day of intensive learning where we dismantle traditional SaaS UI patterns and rebuild them for the modern editorial web.
+                Dive deep into the evolving landscape of digital product design. This workshop isn't just about pixels; it's about systems, psychology, and the emerging "UptoHack" aesthetic. Join us for a full day of intensive learning where we dismantle traditional SaaS UI patterns and rebuild them for the modern editorial web.
               </p>
               <p>
                 We'll explore the 'No-Line' rule, tonal layering, and how to use uncomfortable white space to create premium experiences that breathe. Whether you're a seasoned lead or an aspiring designer, this workshop will challenge your perspective on hierarchy and depth.
@@ -217,11 +229,34 @@ export default function Event() {
               <div>
                 <div className="text-[10px] font-bold text-gray-500 tracking-widest uppercase mb-1">Hosted By</div>
                 <div className="font-bold text-gray-900 text-sm">Alex Rivero</div>
-                <div className="text-gray-500 text-xs mt-0.5">Design Lead @ Curator</div>
+                <div className="text-gray-500 text-xs mt-0.5">Design Lead @ UptoHack</div>
               </div>
             </div>
           </motion.div>
         </div>
+        {/* Render Fetched Events */}
+        {events.length > 0 && (
+          <div className="mt-16">
+            <h2 className="text-3xl font-bold text-gray-900 mb-6">Your Created Events</h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {events.map((event) => (
+                <div key={event.id} className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
+                  <div className="flex justify-between items-start mb-4">
+                    <span className="bg-purple-100 text-purple-700 text-xs font-bold px-2.5 py-1 rounded-full uppercase tracking-wider">
+                      Event
+                    </span>
+                    <span className="text-xs text-gray-500 font-medium">ID: {event.id}</span>
+                  </div>
+                  <h3 className="text-xl font-bold text-gray-900 mb-2">{event.title}</h3>
+                  <div className="flex items-center gap-2 text-sm text-gray-500 mt-4">
+                    <Users className="w-4 h-4" />
+                    <span>Owner: {event.owner}</span>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
       </main>
     </div>
   );

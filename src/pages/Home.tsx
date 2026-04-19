@@ -13,41 +13,19 @@ import {
   Globe,
   Share2,
   Users,
+  Twitter,
+  Instagram,
+  Linkedin
 } from 'lucide-react';
 
 const Navbar = () => (
-  <nav className="fixed top-0 w-full z-50 bg-surface/80 backdrop-blur-xl shadow-[0_20px_40px_rgba(27,28,29,0.04)] h-16 flex justify-between items-center px-6 md:px-8 transition-all duration-300">
+  <nav className="fixed top-4 left-1/2 -translate-x-1/2 w-[95%] max-w-5xl z-50 backdrop-blur-md bg-white/10 border border-white/20 shadow-lg rounded-2xl h-16 flex justify-between items-center px-6 transition-all duration-300">
     <div className="flex items-center gap-8">
       <span className="text-xl font-bold tracking-tighter text-on-surface font-headline">
-        Curator
+        UptoHack
       </span>
-      <div className="hidden md:flex gap-6">
-        <Link to="/" className="text-primary font-semibold text-sm transition-all duration-300">
-          Home
-        </Link>
-        <Link to="/community" className="text-on-surface-variant hover:text-on-surface text-sm transition-all duration-300">
-          Communities
-        </Link>
-        <Link to="/event" className="text-on-surface-variant hover:text-on-surface text-sm transition-all duration-300">
-          Event
-        </Link>
-      </div>
     </div>
     <div className="flex items-center gap-4">
-      <div className="hidden md:flex items-center bg-surface-container-low px-3 py-1.5 rounded-full">
-        <Search className="text-on-surface-variant w-4 h-4 mr-2" />
-        <input
-          type="text"
-          placeholder="Search events..."
-          className="bg-transparent border-none focus:outline-none text-sm text-on-surface w-40 placeholder:text-outline"
-        />
-      </div>
-      <button onClick={() => alert("Notifications")} className="p-2 text-on-surface-variant hover:bg-surface-container-low rounded-full transition-all">
-        <Bell className="w-5 h-5" />
-      </button>
-      <button onClick={() => alert("Settings")} className="p-2 text-on-surface-variant hover:bg-surface-container-low rounded-full transition-all">
-        <Settings className="w-5 h-5" />
-      </button>
       <Link to="/login" className="w-8 h-8 rounded-full bg-surface-container-high overflow-hidden hover:ring-2 hover:ring-primary transition-all">
         <img
           src="https://lh3.googleusercontent.com/aida-public/AB6AXuA8lsF7EjahYQvzMul7Z0r2GeyQlpvZCf_SR0R8foON7kwsJ8aoAFX45_94TM2TJrADixtJ18B419bxaDIu9C_4mMh8ugDCgXjqXpZQCDsRDZ3JnCBahEvuEzaGTZ7ckPYZfePRYbZ1IWadAzmtycVkuKblaW6F9YdMYAKzAeOjJz_OPYIqeuzcNKrc3a_UkSOu4BH9YJPcW1DH_F3NI6NHW00gUKR8zobwV4_ujqHOytWIa67JG2YTIK6fxWc4L19xZ63OiJCh131o"
@@ -66,9 +44,9 @@ const Hero = () => (
       <div className="absolute bottom-[-10%] left-[-5%] w-[600px] h-[600px] bg-tertiary/5 rounded-full blur-[120px]"></div>
     </div>
     <motion.div
-      initial={{ opacity: 0, y: 20 }}
+      initial={{ opacity: 0, y: 40 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.8, ease: 'easeOut' }}
+      transition={{ duration: 0.5, ease: 'easeOut' }}
       className="relative z-10 max-w-5xl w-full text-center space-y-8"
     >
       <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-surface-container-low text-primary text-xs font-label uppercase tracking-widest font-bold">
@@ -84,10 +62,10 @@ const Hero = () => (
         The elite ecosystem for modern event organizers and high-impact communities. Sophisticated tools, seamless integration, effortless growth.
       </p>
       <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-4">
-        <Link to="/dashboard" className="bg-gradient-to-br from-primary to-primary-container text-on-primary px-8 py-4 rounded-xl font-semibold shadow-lg shadow-primary/20 hover:scale-95 transition-all duration-300 inline-block">
+        <Link to="/login" className="bg-gradient-to-br from-[#7c3aed] to-[#6d28d9] text-white px-8 py-4 rounded-xl font-semibold shadow-lg shadow-purple-500/30 hover:scale-105 transition-all duration-300 inline-block">
           Go to Dashboard
         </Link>
-        <Link to="/community" className="bg-surface-container-highest text-primary px-8 py-4 rounded-xl font-semibold hover:bg-surface-container-low transition-all duration-300 inline-block">
+        <Link to="/feed" className="bg-white/50 border border-black/5 backdrop-blur-md text-[#7c3aed] px-8 py-4 rounded-xl font-semibold hover:scale-105 transition-all duration-300 inline-block">
           Explore Communities
         </Link>
       </div>
@@ -214,7 +192,7 @@ const BentoGrid = () => (
         <div className="relative z-10 max-w-sm space-y-4">
           <h3 className="text-2xl font-semibold text-on-surface">Scale Without Limits</h3>
           <p className="text-on-surface-variant text-sm leading-relaxed">
-            Whether it's a 10-person workshop or a 10,000-person global summit, Curator handles the complexity so you can focus on the content.
+            Whether it's a 10-person workshop or a 10,000-person global summit, UptoHack handles the complexity so you can focus on the content.
           </p>
           <button onClick={() => alert("Enterprise features coming soon!")} className="text-primary font-semibold flex items-center gap-2 group text-sm mt-2">
             Learn about enterprise features
@@ -290,52 +268,77 @@ const Footer = () => (
     <div className="max-w-7xl mx-auto px-6">
       <div className="grid grid-cols-1 md:grid-cols-4 gap-12 pb-24">
         <div className="space-y-6">
-          <span className="text-2xl font-bold tracking-tighter text-on-surface font-headline">Curator</span>
+          <span className="text-2xl font-bold tracking-tighter text-on-surface font-headline">UptoHack</span>
           <p className="text-on-surface-variant text-sm leading-relaxed pr-4">
             Redefining the digital community experience through elegant design and seamless utility.
           </p>
           <div className="flex gap-4">
-            <a href="#" onClick={(e) => { e.preventDefault(); alert("Opening social link..."); }} className="text-on-surface-variant hover:text-primary transition-colors">
-              <Share2 className="w-5 h-5" />
+            <a href="#" onClick={(e) => { e.preventDefault(); alert("Opening Twitter..."); }} className="text-on-surface-variant hover:text-primary transition-colors">
+              <Twitter className="w-5 h-5" />
             </a>
-            <a href="#" onClick={(e) => { e.preventDefault(); alert("Opening social link..."); }} className="text-on-surface-variant hover:text-primary transition-colors">
-              <Globe className="w-5 h-5" />
+            <a href="#" onClick={(e) => { e.preventDefault(); alert("Opening Instagram..."); }} className="text-on-surface-variant hover:text-primary transition-colors">
+              <Instagram className="w-5 h-5" />
             </a>
-            <a href="#" onClick={(e) => { e.preventDefault(); alert("Opening social link..."); }} className="text-on-surface-variant hover:text-primary transition-colors">
-              <Users className="w-5 h-5" />
+            <a href="#" onClick={(e) => { e.preventDefault(); alert("Opening LinkedIn..."); }} className="text-on-surface-variant hover:text-primary transition-colors">
+              <Linkedin className="w-5 h-5" />
             </a>
           </div>
         </div>
         
         {[
-          { title: 'Product', links: ['Features', 'Pricing', 'Integrations', 'Live Events'] },
-          { title: 'Resources', links: ['Documentation', 'API Reference', 'Community Forum', 'Help Center'] },
-          { title: 'Company', links: ['About Us', 'Careers', 'Blog', 'Privacy Policy'] },
+          { 
+            title: 'Product', 
+            links: [
+              { name: 'Features', path: '/features' },
+              { name: 'Pricing', path: '/pricing' },
+              { name: 'Integrations', path: '/integrations' },
+              { name: 'Live Events', path: '/event' }
+            ] 
+          },
+          { 
+            title: 'Resources', 
+            links: [
+              { name: 'Documentation', path: '/documentation' },
+              { name: 'API Reference', path: '/api-reference' },
+              { name: 'Community Forum', path: '/community' },
+              { name: 'Help Center', path: '/help-center' }
+            ] 
+          },
+          { 
+            title: 'Company', 
+            links: [
+              { name: 'About Us', path: '/about' },
+              { name: 'Careers', path: '/careers' },
+              { name: 'Blog', path: '/blog' },
+              { name: 'Privacy Policy', path: '/privacy-policy' }
+            ] 
+          },
         ].map((col, i) => (
           <div key={i}>
             <h4 className="font-bold text-sm mb-6 uppercase tracking-widest font-label text-on-surface">{col.title}</h4>
             <ul className="space-y-4 text-sm text-on-surface-variant">
               {col.links.map((link, j) => (
                 <li key={j}>
-                  <a href="#" onClick={(e) => { e.preventDefault(); alert(`Navigating to ${link}`); }} className="hover:text-primary transition-colors">{link}</a>
+                  <Link to={link.path} className="hover:text-primary transition-colors">{link.name}</Link>
                 </li>
               ))}
             </ul>
           </div>
         ))}
       </div>
-      
-      <div className="pt-12 border-t border-outline-variant/20 flex flex-col md:flex-row justify-between items-center gap-6">
-        <div className="text-xs font-label text-outline uppercase tracking-widest">
-          © 2024 Curator Technologies Inc. All rights reserved.
-        </div>
-        <div className="flex items-center gap-6 text-xs font-label text-outline uppercase tracking-widest">
-          <span className="flex items-center gap-2">
-            <span className="w-1.5 h-1.5 rounded-full bg-tertiary"></span> 
-            Systems Operational
-          </span>
-          <span className="font-mono text-[10px]">Curator Pro v2.4.1</span>
-        </div>
+
+      {/* Massive Animated Footer Text */}
+      <div className="w-full flex justify-center items-center overflow-hidden pointer-events-none mt-12 pt-8">
+        <motion.div
+          initial={{ opacity: 0, y: 80, scale: 0.9 }}
+          whileInView={{ opacity: 1, y: 0, scale: 1 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.8, ease: 'easeOut' }}
+        >
+          <h1 className="text-[16vw] md:text-[18vw] font-black tracking-tighter leading-none bg-gradient-to-b from-on-surface/20 to-transparent text-transparent bg-clip-text select-none uppercase">
+            UPTOHACK
+          </h1>
+        </motion.div>
       </div>
     </div>
   </footer>
