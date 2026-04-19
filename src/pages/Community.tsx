@@ -31,7 +31,7 @@ export default function Community() {
       {/* Top Navigation */}
       <header className="h-16 bg-white border-b border-gray-100 flex items-center justify-between px-6 shrink-0 z-20">
         <div className="flex items-center gap-12">
-          <span className="text-xl font-bold tracking-tight">Curator Hub</span>
+          <span className="text-xl font-bold tracking-tight">UptoHack Hub</span>
           <nav className="hidden md:flex items-center gap-8">
             <Link to="/community" className="text-[#7c3aed] font-semibold text-sm border-b-2 border-[#7c3aed] py-5">
               Explore
@@ -160,7 +160,7 @@ export default function Community() {
                     <div>
                       <h4 className="font-bold text-gray-900 text-sm">Marcus Sterling</h4>
                       <div className="flex items-center gap-2 text-xs text-gray-500">
-                        <span>Curator • 2h ago</span>
+                        <span>UptoHack • 2h ago</span>
                         <span className="bg-[#d4ed31] text-gray-900 text-[8px] font-bold px-1.5 py-0.5 rounded uppercase tracking-wider">Member</span>
                       </div>
                     </div>
@@ -219,7 +219,7 @@ export default function Community() {
                 </div>
 
                 <p className="text-gray-800 text-sm leading-relaxed mb-4">
-                  Our weekly community sync is starting now in the "Main Lounge" voice channel. Join us for a first look at the Q3 Roadmap and the new Curator Tools.
+                  Our weekly community sync is starting now in the "Main Lounge" voice channel. Join us for a first look at the Q3 Roadmap and the new UptoHack Tools.
                 </p>
 
                 <div className="bg-[#f8f9fa] rounded-2xl p-4 flex items-center justify-between mb-4 border border-gray-100">

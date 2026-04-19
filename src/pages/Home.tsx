@@ -19,7 +19,7 @@ const Navbar = () => (
   <nav className="fixed top-0 w-full z-50 bg-surface/80 backdrop-blur-xl shadow-[0_20px_40px_rgba(27,28,29,0.04)] h-16 flex justify-between items-center px-6 md:px-8 transition-all duration-300">
     <div className="flex items-center gap-8">
       <span className="text-xl font-bold tracking-tighter text-on-surface font-headline">
-        Curator
+        UptoHack
       </span>
       <div className="hidden md:flex gap-6">
         <Link to="/" className="text-primary font-semibold text-sm transition-all duration-300">
@@ -214,7 +214,7 @@ const BentoGrid = () => (
         <div className="relative z-10 max-w-sm space-y-4">
           <h3 className="text-2xl font-semibold text-on-surface">Scale Without Limits</h3>
           <p className="text-on-surface-variant text-sm leading-relaxed">
-            Whether it's a 10-person workshop or a 10,000-person global summit, Curator handles the complexity so you can focus on the content.
+            Whether it's a 10-person workshop or a 10,000-person global summit, UptoHack handles the complexity so you can focus on the content.
           </p>
           <button onClick={() => alert("Enterprise features coming soon!")} className="text-primary font-semibold flex items-center gap-2 group text-sm mt-2">
             Learn about enterprise features
@@ -290,7 +290,7 @@ const Footer = () => (
     <div className="max-w-7xl mx-auto px-6">
       <div className="grid grid-cols-1 md:grid-cols-4 gap-12 pb-24">
         <div className="space-y-6">
-          <span className="text-2xl font-bold tracking-tighter text-on-surface font-headline">Curator</span>
+          <span className="text-2xl font-bold tracking-tighter text-on-surface font-headline">UptoHack</span>
           <p className="text-on-surface-variant text-sm leading-relaxed pr-4">
             Redefining the digital community experience through elegant design and seamless utility.
           </p>
@@ -351,14 +351,14 @@ const Footer = () => (
       
       <div className="pt-12 border-t border-outline-variant/20 flex flex-col md:flex-row justify-between items-center gap-6">
         <div className="text-xs font-label text-outline uppercase tracking-widest">
-          © 2024 Curator Technologies Inc. All rights reserved.
+          © 2024 UptoHack Technologies Inc. All rights reserved.
         </div>
         <div className="flex items-center gap-6 text-xs font-label text-outline uppercase tracking-widest">
           <span className="flex items-center gap-2">
             <span className="w-1.5 h-1.5 rounded-full bg-tertiary"></span> 
             Systems Operational
           </span>
-          <span className="font-mono text-[10px]">Curator Pro v2.4.1</span>
+          <span className="font-mono text-[10px]">UptoHack Pro v2.4.1</span>
         </div>
       </div>
     </div>

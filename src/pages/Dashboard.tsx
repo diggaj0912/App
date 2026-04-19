@@ -27,13 +27,13 @@ export default function Dashboard() {
           {/* Logo */}
           <div className="h-20 flex items-center px-6 gap-3">
             <div className="w-1.5 h-6 bg-[#7c3aed] rounded-full"></div>
-            <span className="text-xl font-bold tracking-tight">Curator</span>
+            <span className="text-xl font-bold tracking-tight">UptoHack</span>
           </div>
 
           {/* Nav Menu */}
           <div className="px-4 mt-4">
             <div className="px-2 mb-6">
-              <div className="text-[10px] font-bold text-[#7c3aed] tracking-widest uppercase">Curator Pro</div>
+              <div className="text-[10px] font-bold text-[#7c3aed] tracking-widest uppercase">UptoHack Pro</div>
               <div className="text-[10px] font-bold text-gray-400 tracking-widest uppercase mt-0.5">Elite Management</div>
             </div>
 
@@ -172,8 +172,28 @@ export default function Dashboard() {
 
             {/* Bottom Section */}
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-              {/* Left Column (Events) */}
+              {/* Left Column (Events & Admin Actions) */}
               <div className="lg:col-span-2 space-y-6">
+                
+                {/* Admin Actions */}
+                <div className="bg-white rounded-[2rem] p-6 shadow-sm border border-gray-100 mb-8">
+                  <h3 className="text-xl font-bold text-gray-900 mb-4">Organizer Controls</h3>
+                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                    <button onClick={() => alert('Bulk email system triggered!')} className="bg-indigo-50 text-[#7c3aed] rounded-xl p-4 text-left hover:bg-indigo-100 transition-colors">
+                      <div className="font-bold text-sm mb-1">Bulk Email</div>
+                      <div className="text-xs opacity-80">Message all members</div>
+                    </button>
+                    <button onClick={() => alert('One-click bulk certificates issued!')} className="bg-amber-50 text-amber-600 rounded-xl p-4 text-left hover:bg-amber-100 transition-colors">
+                      <div className="font-bold text-sm mb-1">1-Click Certificates</div>
+                      <div className="text-xs opacity-80">Issue for past events</div>
+                    </button>
+                    <button onClick={() => alert('Admin invite link generated: https://uptohack.com/join/admin-123')} className="bg-emerald-50 text-emerald-600 rounded-xl p-4 text-left hover:bg-emerald-100 transition-colors">
+                      <div className="font-bold text-sm mb-1">Admin Share</div>
+                      <div className="text-xs opacity-80">Share access to event</div>
+                    </button>
+                  </div>
+                </div>
+
                 <div className="flex justify-between items-center mb-2">
                   <h2 className="text-2xl font-bold text-gray-900">Upcoming Events</h2>
                   <Link to="/event" className="text-[#7c3aed] font-semibold text-sm flex items-center gap-1 hover:underline">

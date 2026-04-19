@@ -30,7 +30,7 @@ export default function Feed() {
           <div className="w-8 h-8 bg-[#6d28d9] rounded-xl flex items-center justify-center shadow-sm">
             <div className="w-4 h-4 border-2 border-white rounded-full"></div>
           </div>
-          <span className="text-xl font-bold tracking-tight text-gray-900">Curator Hub</span>
+          <span className="text-xl font-bold tracking-tight text-gray-900">UptoHack Hub</span>
         </div>
 
         <div className="px-6 py-4">
@@ -176,7 +176,7 @@ export default function Feed() {
                   <div>
                     <h3 className="font-bold text-gray-900 leading-tight">Marcus Sterling</h3>
                     <div className="flex items-center gap-1.5 mt-0.5">
-                      <p className="text-sm text-gray-500">Curator · 2h ago</p>
+                      <p className="text-sm text-gray-500">UptoHack · 2h ago</p>
                       <span className="bg-[#fbff00] text-[#1a1a1a] text-[10px] uppercase font-bold px-2 py-0.5 rounded-full tracking-wide">Member</span>
                     </div>
                   </div>
@@ -245,7 +245,7 @@ export default function Feed() {
               </div>
 
               <p className="text-gray-800 leading-relaxed text-[15px]">
-                Our weekly community sync is starting now in the "Main Lounge" voice channel. Join us for a first look at the Q3 Roadmap and the new Curator Tools.
+                Our weekly community sync is starting now in the "Main Lounge" voice channel. Join us for a first look at the Q3 Roadmap and the new UptoHack Tools.
               </p>
 
               {/* Call to action box */}

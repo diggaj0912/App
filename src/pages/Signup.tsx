@@ -11,6 +11,8 @@ export default function Signup() {
     fullName: "",
     email: "",
     password: "",
+    college: "",
+    role: "Student",
   });
 
   const handleChange = (e: any) => {
@@ -27,7 +29,7 @@ export default function Signup() {
         const res = await fetch("/signup", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ email: form.email, password: form.password }),
+          body: JSON.stringify(form),
         });
         const data = await res.json();
         if (data.message === "User created successfully" || data.message === "User created") {
@@ -98,7 +100,7 @@ export default function Signup() {
 
           <div className="relative z-10 w-full max-w-xl">
             <h1 className="text-5xl font-bold text-white tracking-tight mb-6">
-              The Digital Curator
+              UptoHack
             </h1>
             <p className="text-lg text-indigo-100/80 leading-relaxed mb-16 max-w-md">
               Crafting high-end community experiences through intentional design and sophisticated editorial management.
@@ -214,6 +216,36 @@ export default function Signup() {
                 </p>
               </div>
 
+              <div className="space-y-2">
+                <label className="text-[10px] font-bold text-gray-900 tracking-widest uppercase">College / University</label>
+                <input
+                  type="text"
+                  name="college"
+                  value={form.college}
+                  onChange={handleChange}
+                  className="w-full bg-[#f1f3f5] border-2 border-transparent focus:border-indigo-100 focus:bg-white focus:ring-4 focus:ring-indigo-50 rounded-xl py-3 px-4 text-sm text-gray-900 transition-all outline-none placeholder:text-gray-400"
+                  placeholder="Harvard University"
+                  required
+                />
+              </div>
+
+              <div className="space-y-2">
+                <label className="text-[10px] font-bold text-gray-900 tracking-widest uppercase">Your Role</label>
+                <select
+                  name="role"
+                  value={form.role}
+                  onChange={handleChange}
+                  className="w-full bg-[#f1f3f5] border-2 border-transparent focus:border-indigo-100 focus:bg-white focus:ring-4 focus:ring-indigo-50 rounded-xl py-3 px-4 text-sm text-gray-900 transition-all outline-none"
+                  required
+                >
+                  <option value="Student">Student</option>
+                  <option value="Developer">Developer</option>
+                  <option value="Designer">Designer</option>
+                  <option value="Organizer">Community Organizer</option>
+                  <option value="Other">Other</option>
+                </select>
+              </div>
+
               <button
                 type="submit"
                 className="w-full bg-[#5a67d8] text-white py-3.5 rounded-xl font-bold text-sm hover:bg-[#4c51bf] transition-all shadow-lg shadow-indigo-500/30 mt-8"
@@ -242,7 +274,7 @@ export default function Signup() {
       {/* Footer */}
       <footer className="h-20 bg-[#f8f9fa] border-t border-gray-200 flex items-center justify-between px-8 text-sm text-gray-500 shrink-0">
         <div>
-          © 2024 The Digital Curator. All rights reserved.
+          © 2024 UptoHack. All rights reserved.
         </div>
         <div className="flex gap-6">
           <a href="#" className="hover:text-gray-900 transition-colors">Privacy Policy</a>

@@ -35,7 +35,7 @@ export default function Certificates() {
     {
       id: "CR-77241",
       title: "Open Source Community Contributor",
-      description: "Commendation for significant code contributions to the Curator Core framework throughout Q2.",
+      description: "Commendation for significant code contributions to the UptoHack Core framework throughout Q2.",
       date: "June 21, 2024",
       image: "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?q=80&w=800&auto=format&fit=crop",
       verified: true,
@@ -59,7 +59,7 @@ export default function Certificates() {
           {/* Nav Menu */}
           <div className="px-6 mt-8">
             <div className="mb-8">
-              <div className="text-[10px] font-bold text-gray-500 tracking-widest uppercase">Curator Pro</div>
+              <div className="text-[10px] font-bold text-gray-500 tracking-widest uppercase">UptoHack Pro</div>
               <div className="text-sm font-bold text-gray-900 mt-1">Elite Management</div>
             </div>
 
@@ -101,7 +101,7 @@ export default function Certificates() {
         {/* Topbar */}
         <header className="h-20 bg-white border-b border-gray-100 flex items-center justify-between px-8 shrink-0">
           <div className="flex items-center gap-8">
-            <span className="text-xl font-bold tracking-tight">Curator</span>
+            <span className="text-xl font-bold tracking-tight">UptoHack</span>
             <div className="hidden md:flex gap-6">
               <Link to="/community" className="text-gray-500 hover:text-gray-900 text-sm transition-all duration-300">
                 Communities
@@ -234,7 +234,7 @@ export default function Certificates() {
               <div className="max-w-sm">
                 <h4 className="text-[10px] font-bold text-gray-900 tracking-widest uppercase mb-4">Verification Node</h4>
                 <p className="text-xs text-gray-500 leading-relaxed">
-                  All certificates listed are secured via the Curator Decentralized Ledger. Verification status is real-time and immutable.
+                  All certificates listed are secured via the UptoHack Decentralized Ledger. Verification status is real-time and immutable.
                 </p>
               </div>
               <div className="flex gap-16">

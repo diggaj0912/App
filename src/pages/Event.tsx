@@ -52,7 +52,7 @@ export default function Event() {
       <nav className="bg-white px-6 h-16 flex items-center justify-between sticky top-0 z-50 border-b border-gray-100">
         <div className="flex items-center gap-8">
           <Link to="/" className="text-xl font-bold tracking-tight">
-            Curator
+            UptoHack
           </Link>
           <div className="hidden md:flex gap-6">
             <Link to="/community" className="text-sm text-gray-500 hover:text-gray-900 transition-colors">
@@ -128,7 +128,7 @@ export default function Event() {
             <h2 className="text-3xl font-bold text-gray-900 mb-6">About this Event</h2>
             <div className="text-gray-600 leading-relaxed space-y-4 text-lg">
               <p>
-                Dive deep into the evolving landscape of digital product design. This workshop isn't just about pixels; it's about systems, psychology, and the emerging "Digital Curator" aesthetic. Join us for a full day of intensive learning where we dismantle traditional SaaS UI patterns and rebuild them for the modern editorial web.
+                Dive deep into the evolving landscape of digital product design. This workshop isn't just about pixels; it's about systems, psychology, and the emerging "UptoHack" aesthetic. Join us for a full day of intensive learning where we dismantle traditional SaaS UI patterns and rebuild them for the modern editorial web.
               </p>
               <p>
                 We'll explore the 'No-Line' rule, tonal layering, and how to use uncomfortable white space to create premium experiences that breathe. Whether you're a seasoned lead or an aspiring designer, this workshop will challenge your perspective on hierarchy and depth.
@@ -251,7 +251,7 @@ export default function Event() {
               <div>
                 <div className="text-[10px] font-bold text-gray-500 tracking-widest uppercase mb-1">Hosted By</div>
                 <div className="font-bold text-gray-900 text-sm">Alex Rivero</div>
-                <div className="text-gray-500 text-xs mt-0.5">Design Lead @ Curator</div>
+                <div className="text-gray-500 text-xs mt-0.5">Design Lead @ UptoHack</div>
               </div>
             </div>
           </motion.div>

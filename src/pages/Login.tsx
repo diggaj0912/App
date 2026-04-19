@@ -114,7 +114,7 @@ export default function Login() {
               <div className="w-10 h-10 bg-white rounded-xl flex items-center justify-center shadow-lg">
                 <div className="w-5 h-5 border-2 border-t-[#38bdf8] border-r-[#818cf8] border-b-[#f472b6] border-l-[#fb923c] rounded-full"></div>
               </div>
-              <span className="text-2xl font-bold text-white tracking-tight">Curator Hub</span>
+              <span className="text-2xl font-bold text-white tracking-tight">UptoHack Hub</span>
             </div>
           </div>
 
@@ -136,7 +136,7 @@ export default function Login() {
                 </div>
               </div>
               <p className="text-slate-300 text-sm italic leading-relaxed">
-                "Curator Hub has completely transformed how I connect with other product leaders. The quality of discussions here is unmatched."
+                "UptoHack Hub has completely transformed how I connect with other product leaders. The quality of discussions here is unmatched."
               </p>
             </div>
           </div>
@@ -152,7 +152,7 @@ export default function Login() {
             <div className="w-10 h-10 bg-[#0f172a] rounded-xl flex items-center justify-center shadow-lg">
               <div className="w-5 h-5 border-2 border-t-[#38bdf8] border-r-[#818cf8] border-b-[#f472b6] border-l-[#fb923c] rounded-full"></div>
             </div>
-            <span className="text-2xl font-bold text-gray-900 tracking-tight">Curator Hub</span>
+            <span className="text-2xl font-bold text-gray-900 tracking-tight">UptoHack Hub</span>
           </div>
 
           <div className="mb-10">
